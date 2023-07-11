@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit742c536592ad170d5046a8a4c7bd96ad
 {
+    public static $files = array (
+        'ad901de1e5d16b81f427bfe3dc3de508' => __DIR__ . '/..' . '/cmb2/cmb2/init.php',
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
