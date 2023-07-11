@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Super Downloads API
  * Plugin URI:        https://t.me/felinto
- * Description:       Plugin para integração do WordPress com a plataforma Super Downloads API.
+ * Description:       Plugin para integração do WordPress com a plataforma Super Downloads API. Um simples teste para checar a integração com o GitHub.
  * Version:           1.0.0
  * Author:            Felinto
  * Author URI:        https://t.me/felinto
