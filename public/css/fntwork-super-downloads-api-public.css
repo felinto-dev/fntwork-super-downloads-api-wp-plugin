@@ -1,0 +1,73 @@
+:root {
+	--sda-link-color: #007BFF;
+	--sda-link-hover-color: #0056b3;
+	--sda-success-color: #28a745;
+	--sda-success-hover-color: #218838;
+	--sda-error-color: #dc3545;
+	--sda-input-bg-color: #ccc;
+	--sda-button-color: #007BFF;
+	--sda-button-hover-color: #0056b3;
+	--sda-progress-bar-color: #4CAF50;
+	--sda-progress-bar-container-color: #f3f3f3;
+}
+
+#super-downloads-api *,
+#super-downloads-api *:before,
+#super-downloads-api *:after {
+	box-sizing: border-box;
+}
+
+#super-downloads-api h4,
+#super-downloads-api p,
+#super-downloads-api a,
+#super-downloads-api button,
+#super-downloads-api input {
+	margin: 10px 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+
+#super-downloads-api #download-form {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+#super-downloads-api input {
+	padding: 10px;
+	border: 1px solid var(--sda-input-bg-color);
+	border-radius: 4px;
+	width: 70%;
+}
+
+#super-downloads-api button {
+	padding: 10px 20px;
+	background-color: var(--sda-button-color);
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 30%;
+}
+
+#super-downloads-api button:hover {
+	background-color: var(--sda-button-hover-color);
+}
+
+#super-downloads-api .error {
+	color: var(--sda-error-color);
+	display: none;
+}
+
+#super-downloads-api #progress-bar {
+	display: none;
+	width: 0;
+	height: 30px;
+	background-color: var(--sda-progress-bar-color);
+}
+
+#super-downloads-api #progress-container {
+	width: 100%;
+	background-color: var(--sda-progress-bar-container-color);
+}
