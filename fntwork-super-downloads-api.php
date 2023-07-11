@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://t.me/felinto
- * @since             1.0.1
+ * @since             1.0.0
  * @package           Fntwork_Super_Downloads_Api
  *
  * @wordpress-plugin
  * Plugin Name:       Super Downloads API
  * Plugin URI:        https://t.me/felinto
  * Description:       Plugin para integração do WordPress com a plataforma Super Downloads API.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            Felinto
  * Author URI:        https://t.me/felinto
  * License:           GPL-2.0+
@@ -25,7 +25,6 @@
  * Domain Path:       /languages
  * GitHub Plugin URI: felinto-dev/fntwork-super-downloads-api-wp-plugin
  * Primary Branch: main
- * Release Asset: true
  */
 
 // If this file is called directly, abort.
