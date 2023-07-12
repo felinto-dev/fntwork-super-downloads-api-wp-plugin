@@ -66,7 +66,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		do_action('qm/debug', get_option($option_key));
 
 		$cmb = new_cmb2_box([
-			'id'           => $prefix . '_user_role_based_provider_access',
+			'id'           => $prefix . '_options_page',
 			'title'        => 'Super Downloads API',
 			'object_types' => ['options-page'],
 			'option_key'   => $option_key,
@@ -74,7 +74,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		]);
 
 		$cmb->add_field([
-			'id' => $prefix . '_api_key',
+			'id' => 'api_key',
 			'name' => 'API Key',
 			'type' => 'text',
 			'sanitization_cb' => function ($value) {
@@ -85,7 +85,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Daily Download Limit',
 			'desc' => 'Maximum number of downloads per user per day',
-			'id'   => $prefix . '_daily_limit',
+			'id'   => 'daily_limit',
 			'type' => 'text_small',
 			'default' => 20,
 			'sanitization_cb' => 'absint',
@@ -94,7 +94,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Daily Limit Error Message',
 			'desc' => 'Message shown when daily limit is reached',
-			'id'   => $prefix . '_daily_limit_text',
+			'id'   => 'daily_limit_text',
 			'type' => 'text',
 			'default' => 'You have reached your daily download limit',
 		]);
@@ -102,7 +102,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Download Interval',
 			'desc' => 'Number of seconds user must wait between downloads',
-			'id'   => $prefix . '_download_interval',
+			'id'   => 'download_interval',
 			'type' => 'text_small',
 			'default' => 30,
 			'sanitization_cb' => 'absint',
@@ -111,7 +111,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Download Interval Error Message',
 			'desc' => 'Message shown when interval between downloads not met',
-			'id'   => $prefix . '_download_interval_text',
+			'id'   => 'download_interval_text',
 			'type' => 'text',
 			'default' => 'You must wait before downloading again',
 		]);
@@ -119,7 +119,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Same File Download Interval',
 			'desc' => 'Number of seconds user must wait before re-downloading the same file',
-			'id'   => $prefix . '_same_file_interval',
+			'id'   => 'same_file_interval',
 			'type' => 'text_small',
 			'default' => 120,
 			'sanitization_cb' => 'absint',
@@ -128,7 +128,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$cmb->add_field([
 			'name' => 'Same File Interval Error Message',
 			'desc' => 'Message shown when same file download interval not met',
-			'id'   => $prefix . '_same_file_interval_text',
+			'id'   => 'same_file_interval_text',
 			'type' => 'text',
 			'default' => 'You must wait before downloading this file again',
 		]);
@@ -144,7 +144,7 @@ class Fntwork_Super_Downloads_Api_Admin
 			$provider_description = 'Manage Access for Provider: ' . $provider_nickname;
 
 			$group_field_id = $cmb->add_field(array(
-				'id'          => $prefix . $provider['id'] . '_' . $provider_nickname,
+				'id'          => "{$provider_nickname}_provider_options",
 				'type'        => 'group',
 				'description' => $provider_description,
 				'repeatable'  => false,
