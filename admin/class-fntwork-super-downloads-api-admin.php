@@ -82,6 +82,57 @@ class Fntwork_Super_Downloads_Api_Admin
 			}
 		]);
 
+		$cmb->add_field([
+			'name' => 'Daily Download Limit',
+			'desc' => 'Maximum number of downloads per user per day',
+			'id'   => $prefix . '_daily_limit',
+			'type' => 'text_small',
+			'default' => 20,
+			'sanitization_cb' => 'absint',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Daily Limit Error Message',
+			'desc' => 'Message shown when daily limit is reached',
+			'id'   => $prefix . '_daily_limit_text',
+			'type' => 'text',
+			'default' => 'You have reached your daily download limit',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Download Interval',
+			'desc' => 'Number of seconds user must wait between downloads',
+			'id'   => $prefix . '_download_interval',
+			'type' => 'text_small',
+			'default' => 30,
+			'sanitization_cb' => 'absint',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Download Interval Error Message',
+			'desc' => 'Message shown when interval between downloads not met',
+			'id'   => $prefix . '_download_interval_text',
+			'type' => 'text',
+			'default' => 'You must wait before downloading again',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Same File Download Interval',
+			'desc' => 'Number of seconds user must wait before re-downloading the same file',
+			'id'   => $prefix . '_same_file_interval',
+			'type' => 'text_small',
+			'default' => 120,
+			'sanitization_cb' => 'absint',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Same File Interval Error Message',
+			'desc' => 'Message shown when same file download interval not met',
+			'id'   => $prefix . '_same_file_interval_text',
+			'type' => 'text',
+			'default' => 'You must wait before downloading this file again',
+		]);
+
 		$providers = [];
 
 		if (is_admin()) {
