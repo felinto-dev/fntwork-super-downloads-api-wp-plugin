@@ -76,12 +76,8 @@ class Fntwork_Super_Downloads_Api_Public
 	{
 		check_ajax_referer('download_form_nonce');
 		$download_url_input = esc_url($_POST['url-input']);
-		$api_options = get_option('super_downloads_api_options');
 
-		$response_data = $this->api_manager->generate_provider_download_url(
-			$download_url_input,
-			$api_options['api_key'],
-		);
+		$response_data = $this->api_manager->generate_provider_download_url($download_url_input);
 
 		if (!$response_data || !isset($response_data['code'])) {
 			wp_send_json_error([

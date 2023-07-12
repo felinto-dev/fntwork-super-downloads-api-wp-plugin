@@ -16,14 +16,19 @@ class Fntwork_Super_Downloads_API_Manager
 		$this->n8n_api_url = 'https://n8n.fnt.work/webhook/super-downloads-api';
 	}
 
-	public function get_user_role_based_provider_access_option_key()
+	public function get_option_key()
 	{
 		return $this->plugin_name . '_user_role_based_provider_access_options';
 	}
 
+	public function get_api_key() {
+		$option_key = $this->get_option_key();
+		return get_option($option_key)['fntwork-super-downloads-api_api_key'];
+	}
+
 	public function get_user_role_by_provider_access_permissions()
 	{
-		$option_key = $this->get_user_role_based_provider_access_option_key();
+		$option_key = $this->get_option_key();
 		return get_option($option_key);
 	}
 
@@ -57,7 +62,7 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 	}
 
-	public function generate_provider_download_url($product_page_url, $api_key)
+	public function generate_provider_download_url($product_page_url)
 	{
 		$current_user_id = get_current_user_id();
 
@@ -144,7 +149,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 		$api_query = http_build_query([
 			'url' => $product_page_url,
-			'key' => $api_key,
+			'key' => $this->get_api_key(),
 		]);
 		$api_endpoint = $this->n8n_api_url . '?' . $api_query;
 		$api_response = wp_remote_request($api_endpoint, [

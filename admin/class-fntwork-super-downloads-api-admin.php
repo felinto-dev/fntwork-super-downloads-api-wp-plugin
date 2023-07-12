@@ -61,14 +61,25 @@ class Fntwork_Super_Downloads_Api_Admin
 	public function user_role_based_provider_access_metabox()
 	{
 		$prefix = $this->plugin_name;
-		$option_key = $this->api_manager->get_user_role_based_provider_access_option_key();
+		$option_key = $this->api_manager->get_option_key();
+
+		do_action('qm/debug', get_option($option_key));
 
 		$cmb = new_cmb2_box([
 			'id'           => $prefix . '_user_role_based_provider_access',
-			'title'        => 'User Role Based Provider Access',
+			'title'        => 'Super Downloads API',
 			'object_types' => ['options-page'],
 			'option_key'   => $option_key,
-			'parent_slug'  => 'super-downloads-api',
+			'icon_url'     => 'dashicons-download',
+		]);
+
+		$cmb->add_field([
+			'id' => $prefix . '_api_key',
+			'name' => 'API Key',
+			'type' => 'text',
+			'sanitization_cb' => function ($value) {
+				return $value;
+			}
 		]);
 
 		$providers = [];
@@ -180,54 +191,5 @@ class Fntwork_Super_Downloads_Api_Admin
 		 */
 
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/fntwork-super-downloads-api-admin.js', array('jquery'), $this->version, false);
-	}
-
-	public function display_plugin_setup_page()
-	{
-		include_once('partials/fntwork-super-downloads-api-admin-display.php');
-	}
-
-
-	public function add_plugin_admin_menu()
-	{
-		add_menu_page(
-			'Super Downloads API',
-			'Super Downloads API',
-			'manage_options',
-			'super-downloads-api',
-			[$this, 'display_plugin_setup_page'],
-			'dashicons-download',
-		);
-	}
-
-	public function register_plugin_settings()
-	{
-		register_setting('super_downloads_api_options', 'super_downloads_api_options', array($this, 'validate_input'));
-
-		add_settings_section('super_downloads_api_section', 'Configurações da API', array($this, 'display_section'), 'super_downloads_api_options');
-
-		add_settings_field('api_key', 'API Key', array($this, 'render_api_key_field'), 'super_downloads_api_options', 'super_downloads_api_section');
-	}
-
-	public function display_section()
-	{
-		echo '<p>Configure os dados de acesso para obter acesso a Super Downloads API.</p>';
-	}
-
-	public function render_api_key_field()
-	{
-		$options = get_option('super_downloads_api_options');
-		echo '<input type="text" id="api_key" name="super_downloads_api_options[api_key]" value="' . $options['api_key'] . '" size="35" autofocus>';
-	}
-
-	public function validate_input($input)
-	{
-		$new_input = [];
-
-		if (isset($input['api_key'])) {
-			$new_input['api_key'] = sanitize_text_field($input['api_key']);
-		}
-
-		return $new_input;
 	}
 }
