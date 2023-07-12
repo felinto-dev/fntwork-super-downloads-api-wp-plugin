@@ -21,7 +21,8 @@ class Fntwork_Super_Downloads_API_Manager
 		return $this->plugin_name . '_user_role_based_provider_access_options';
 	}
 
-	public function get_api_key() {
+	public function get_api_key()
+	{
 		$option_key = $this->get_option_key();
 		return get_option($option_key)['fntwork-super-downloads-api_api_key'];
 	}
@@ -29,7 +30,17 @@ class Fntwork_Super_Downloads_API_Manager
 	public function get_user_role_by_provider_access_permissions()
 	{
 		$option_key = $this->get_option_key();
-		return get_option($option_key);
+		$option_data = get_option($option_key);
+
+		$filtered_option_data = [];
+
+		foreach ($option_data as $key => $value) {
+			if (is_array($value) && isset($value[0]['role_name']) && isset($value[0]['provider_nickname'])) {
+				$filtered_option_data[$key] = $value;
+			}
+		}
+
+		return $filtered_option_data;
 	}
 
 	public function get_providers()
