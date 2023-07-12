@@ -21,6 +21,12 @@ class Fntwork_Super_Downloads_API_Manager
 		return $this->plugin_name . '_user_role_based_provider_access_options';
 	}
 
+	public function get_option_data()
+	{
+		$option_key = $this->get_option_key();
+		return get_option($option_key);
+	}
+
 	public function get_api_key()
 	{
 		$option_key = $this->get_option_key();
