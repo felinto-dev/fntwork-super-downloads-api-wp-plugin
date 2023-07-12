@@ -81,11 +81,8 @@ class Fntwork_Super_Downloads_Api_Admin
 			$provider_nickname = $provider['attributes']['nickname'];
 			$provider_description = 'Manage Access for Provider: ' . $provider_nickname;
 
-			// include the provider nickname in the field id
-			$field_id = $prefix . $provider['id'] . '_' . $provider_nickname;
-
 			$group_field_id = $cmb->add_field(array(
-				'id'          => $field_id,
+				'id'          => $prefix . $provider['id'] . '_' . $provider_nickname,
 				'type'        => 'group',
 				'description' => $provider_description,
 				'repeatable'  => false,
@@ -102,6 +99,23 @@ class Fntwork_Super_Downloads_Api_Admin
 			foreach ($roles as $role_slug => $role_info) {
 				$role_options[$role_slug] = $role_info['name'];
 			}
+
+			$cmb->add_group_field($group_field_id, array(
+				'name' => 'Credits Spent per Download',
+				'id' => 'credits_spent_per_download',
+				'type' => 'text',
+				'default' => 1,
+				'desc'    => 'This value represents the number of credits that are deducted from a user\'s account each time they download content from a specific provider.',
+				'sanitization_cb' => function ($value) {
+					$value = intval($value);
+					if ($value < 1) {
+						$value = 1;
+					} elseif ($value > 100) {
+						$value = 100;
+					}
+					return $value;
+				},
+			));
 
 			$cmb->add_group_field($group_field_id, array(
 				'name'    => 'Role Name',
