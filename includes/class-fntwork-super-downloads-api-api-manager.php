@@ -18,7 +18,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function get_option_key()
 	{
-		return $this->plugin_name . '_user_role_based_provider_access_options';
+		return $this->plugin_name . '-settings';
 	}
 
 	public function get_option_data()
