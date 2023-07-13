@@ -58,7 +58,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		$this->api_manager = $api_manager;
 	}
 
-	public function user_role_based_provider_access_metabox()
+	public function super_downloads_api_options_metabox()
 	{
 		$prefix = $this->plugin_name;
 		$option_key = $this->api_manager->get_option_key();
