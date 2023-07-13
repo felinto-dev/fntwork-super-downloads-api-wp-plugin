@@ -83,23 +83,6 @@ class Fntwork_Super_Downloads_Api_Admin
 		]);
 
 		$cmb->add_field([
-			'name' => 'Daily Download Limit',
-			'desc' => 'Maximum number of downloads per user per day',
-			'id'   => 'daily_limit',
-			'type' => 'text_small',
-			'default' => 20,
-			'sanitization_cb' => 'absint',
-		]);
-
-		$cmb->add_field([
-			'name' => 'Daily Limit Error Message',
-			'desc' => 'Message shown when daily limit is reached',
-			'id'   => 'daily_limit_text',
-			'type' => 'text',
-			'default' => 'You have reached your daily download limit',
-		]);
-
-		$cmb->add_field([
 			'name' => 'Download Interval',
 			'desc' => 'Number of seconds user must wait between downloads',
 			'id'   => 'download_interval',
@@ -132,6 +115,30 @@ class Fntwork_Super_Downloads_Api_Admin
 			'type' => 'text',
 			'default' => 'You must wait before downloading this file again',
 		]);
+
+		$rate_limiter_group = $cmb->add_field(array(
+			'id' => 'rate_limiter_group',
+			'type' => 'group',
+			'description' => 'Rate Limiter Settings', 
+			'repeatable'  => false,
+		));
+		
+		$cmb->add_group_field($rate_limiter_group, array(
+			'name' => 'Daily Download Limit',
+			'desc' => 'Maximum number of downloads per user per day',
+			'id' => 'daily_limit',
+			'type' => 'text_small',
+			'default' => 20,
+			'sanitization_cb' => 'absint',
+		));
+		
+		$cmb->add_group_field($rate_limiter_group, array(
+			'name' => 'Daily Limit Error Message',
+			'desc' => 'Message shown when daily limit is reached',
+			'id' => 'daily_limit_text',
+			'type' => 'text',
+			'default' => 'You have reached your daily download limit', 
+		));
 
 		$providers = [];
 
