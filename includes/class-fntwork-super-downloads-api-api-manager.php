@@ -34,8 +34,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function get_user_role_by_provider_access_permissions()
 	{
-		$option_key = $this->get_option_key();
-		$option_data = get_option($option_key);
+		$option_data = $this->get_option_data();
 
 		$filtered_option_data = [];
 
