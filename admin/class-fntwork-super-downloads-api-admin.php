@@ -142,7 +142,7 @@ class Fntwork_Super_Downloads_Api_Admin
 			'name' => 'Daily Limit Error Message',
 			'desc' => 'Message shown when daily limit is reached',
 			'id' => 'daily_limit_text',
-			'type' => 'text',
+			'type' => 'textarea_small',
 			'default' => 'You have reached your daily download limit',
 		));
 
