@@ -122,6 +122,22 @@ class Fntwork_Super_Downloads_Api_Admin
 			'default' => 'You must wait before downloading this file again',
 		]);
 
+		$cmb->add_field([
+			'name' => 'Unsupported Service Error Message',
+			'desc' => 'Message shown when a download URL from an unsupported service is provided',
+			'id'   => 'unsupported_service_text',
+			'type' => 'textarea_small',
+			'default' => 'Downloads from this service are not supported',
+		]);
+
+		$cmb->add_field([
+			'name' => 'Permission Denied Error Message',
+			'desc' => 'Message shown when the user\'s plan does not allow downloading this file',
+			'id'   => 'permission_denied_text',
+			'type' => 'textarea_small',
+			'default' => 'Your user role does not have permission to download this file',
+		]);
+
 		$rate_limiter_group = $cmb->add_field(array(
 			'id' => 'rate_limiter_group',
 			'type' => 'group',

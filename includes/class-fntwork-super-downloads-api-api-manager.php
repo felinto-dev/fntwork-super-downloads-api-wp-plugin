@@ -79,6 +79,8 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function generate_provider_download_url($product_page_url)
 	{
+		$option_data = $this->get_option_data();
+
 		$current_user_id = get_current_user_id();
 
 		$transient_name = 'user_' . $current_user_id . '_url_' . md5($product_page_url);
@@ -86,7 +88,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 		if ($transient_value) {
 			return [
-				'message' => 'Você já solicitou o download para esta URL nos últimos 120 segundos. Caso esteja enfrentando problemas para fazer o download, em vez de tentar diversas vezes seguidas, tire um print do erro, entre em contato com o suporte e aguarde nossa resposta.'
+				'message' => $option_data['same_file_interval_text'],
 			];
 		} else {
 			set_transient($transient_name, true, 120);
@@ -110,7 +112,9 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 
 		if ($provider_nickname == null) {
-			return ['message' => 'Este serviço não é suportado. Por favor, verifique a URL.'];
+			return [
+				'message' => $option_data['unsupported_service_text'],
+			];
 		}
 
 		$user_permissions = $this->get_user_role_by_provider_access_permissions();
@@ -147,7 +151,9 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 
 		if (!$user_has_access) {
-			return ['message' => 'Você não tem permissão para fazer este download. Por favor, verifique se o seu plano suporta este serviço.'];
+			return [
+				'message' => $option_data['permission_denied_text'],
+			];
 		}
 
 		// Add check for downloads in the last 20 seconds
@@ -156,7 +162,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 		if ($recent_download_transient_value) {
 			return [
-				'message' => 'Você só pode fazer 1 download a cada 20 segundos. Por favor, aguarde e tente novamente.'
+				'message' => $option_data['download_interval_text'],
 			];
 		} else {
 			set_transient($recent_download_transient_name, true, 20);
