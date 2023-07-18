@@ -88,6 +88,9 @@ class Fntwork_Super_Downloads_Api_Admin
 			'id'   => 'download_interval',
 			'type' => 'text_small',
 			'default' => 30,
+			'attributes' => array(
+				'type' => 'number',
+			),
 			'sanitization_cb' => 'absint',
 		]);
 
@@ -95,7 +98,7 @@ class Fntwork_Super_Downloads_Api_Admin
 			'name' => 'Download Interval Error Message',
 			'desc' => 'Message shown when interval between downloads not met',
 			'id'   => 'download_interval_text',
-			'type' => 'text',
+			'type' => 'textarea_small',
 			'default' => 'You must wait before downloading again',
 		]);
 
@@ -104,7 +107,10 @@ class Fntwork_Super_Downloads_Api_Admin
 			'desc' => 'Number of seconds user must wait before re-downloading the same file',
 			'id'   => 'same_file_interval',
 			'type' => 'text_small',
-			'default' => 120,
+			'default' => 60,
+			'attributes' => array(
+				'type' => 'number',
+			),
 			'sanitization_cb' => 'absint',
 		]);
 
@@ -112,17 +118,17 @@ class Fntwork_Super_Downloads_Api_Admin
 			'name' => 'Same File Interval Error Message',
 			'desc' => 'Message shown when same file download interval not met',
 			'id'   => 'same_file_interval_text',
-			'type' => 'text',
+			'type' => 'textarea_small',
 			'default' => 'You must wait before downloading this file again',
 		]);
 
 		$rate_limiter_group = $cmb->add_field(array(
 			'id' => 'rate_limiter_group',
 			'type' => 'group',
-			'description' => 'Rate Limiter Settings', 
+			'description' => 'Rate Limiter Settings',
 			'repeatable'  => false,
 		));
-		
+
 		$cmb->add_group_field($rate_limiter_group, array(
 			'name' => 'Daily Download Limit',
 			'desc' => 'Maximum number of downloads per user per day',
@@ -131,13 +137,13 @@ class Fntwork_Super_Downloads_Api_Admin
 			'default' => 20,
 			'sanitization_cb' => 'absint',
 		));
-		
+
 		$cmb->add_group_field($rate_limiter_group, array(
 			'name' => 'Daily Limit Error Message',
 			'desc' => 'Message shown when daily limit is reached',
 			'id' => 'daily_limit_text',
 			'type' => 'text',
-			'default' => 'You have reached your daily download limit', 
+			'default' => 'You have reached your daily download limit',
 		));
 
 		$providers = [];
