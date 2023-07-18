@@ -29,8 +29,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function get_api_key()
 	{
-		$option_key = $this->get_option_key();
-		return get_option($option_key)['api_key'];
+		return $this->get_option_data()['api_key'];
 	}
 
 	public function get_user_role_by_provider_access_permissions()
