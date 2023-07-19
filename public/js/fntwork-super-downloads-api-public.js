@@ -1,4 +1,4 @@
-const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+const fpPromise = import('https://esm3.fntwork.workers.dev')
 	.then(FingerprintJS => FingerprintJS.load({
 		monitoring: false
 	}))
