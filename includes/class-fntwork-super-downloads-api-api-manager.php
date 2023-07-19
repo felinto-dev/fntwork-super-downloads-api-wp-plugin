@@ -95,7 +95,7 @@ class Fntwork_Super_Downloads_API_Manager
 				'message' => $option_data['same_file_interval_text'],
 			];
 		} else {
-			set_transient($transient_name, true, 120);
+			set_transient($transient_name, true, $option_data['same_file_interval']);
 		}
 
 		$providers = $this->get_providers();
@@ -163,7 +163,6 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		// Add check for downloads in the last 20 seconds
 		$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
 		$recent_download_transient_value = get_transient($recent_download_transient_name);
 
@@ -172,7 +171,7 @@ class Fntwork_Super_Downloads_API_Manager
 				'message' => $option_data['download_interval_text'],
 			];
 		} else {
-			set_transient($recent_download_transient_name, true, 20);
+			set_transient($recent_download_transient_name, true, $option_data['download_interval']);
 		}
 
 		$api_query = http_build_query([
