@@ -91,7 +91,15 @@ class Fntwork_Super_Downloads_Api_Admin
 			'attributes' => array(
 				'type' => 'number',
 			),
-			'sanitization_cb' => 'absint',
+			'sanitization_cb' => function ($value) {
+				$value = intval($value);
+
+				if ($value < 1) {
+					$value = 1;
+				}
+
+				return $value;
+			},
 		]);
 
 		$cmb->add_field([
@@ -111,7 +119,15 @@ class Fntwork_Super_Downloads_Api_Admin
 			'attributes' => [
 				'type' => 'number',
 			],
-			'sanitization_cb' => 'absint',
+			'sanitization_cb' => function ($value) {
+				$value = intval($value);
+
+				if ($value < 1) {
+					$value = 1;
+				}
+
+				return $value;
+			},
 		]);
 
 		$cmb->add_field([
