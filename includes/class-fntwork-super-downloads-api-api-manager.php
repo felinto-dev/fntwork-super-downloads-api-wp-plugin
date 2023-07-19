@@ -81,9 +81,7 @@ class Fntwork_Super_Downloads_API_Manager
 	{
 		$option_data = $this->get_option_data();
 
-		$current_user_id = get_current_user_id();
-
-		$transient_name = 'user_' . $current_user_id . '_url_' . md5($product_page_url);
+		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
 		$transient_value = get_transient($transient_name);
 
 		if ($transient_value) {
@@ -157,7 +155,7 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 
 		// Add check for downloads in the last 20 seconds
-		$recent_download_transient_name = 'user_' . $current_user_id . '_recent_download';
+		$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
 		$recent_download_transient_value = get_transient($recent_download_transient_name);
 
 		if ($recent_download_transient_value) {
