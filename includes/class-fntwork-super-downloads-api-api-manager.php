@@ -157,6 +157,8 @@ class Fntwork_Super_Downloads_API_Manager
 			}
 		}
 
+		$user_has_access = apply_filters('super_downloads_api_allow_user_access', $user_has_access);
+
 		if (!$user_has_access) {
 			return [
 				'message' => $option_data['permission_denied_text'],
@@ -174,14 +176,17 @@ class Fntwork_Super_Downloads_API_Manager
 			set_transient($recent_download_transient_name, true, $option_data['download_interval']);
 		}
 
+		$user_daily_credits = apply_filters('super_downloads_api_user_daily_credits', (string) $option_data['rate_limiter_group'][0]['daily_limit']);
+		$request_cost = apply_filters('super_downloads_api_download_credit_cost', (string) $credits_spent_per_download);
+
 		$api_query = http_build_query([
 			'url' => (string) $product_page_url,
 			'key' => (string) $this->get_api_key(),
 			'user-tracking-id' => (string) get_current_user_id(),
 			'user-tracking-ip' =>  (string) $_SERVER['REMOTE_ADDR'],
 			'user-tracking-browser-fingerprint' => (string) $browser_fingerprint,
-			'rate-limiter-user-daily-credits' => (string) $option_data['rate_limiter_group'][0]['daily_limit'],
-			'rate-limiter-request-cost' => (string) $credits_spent_per_download,
+			'rate-limiter-user-daily-credits' => $user_daily_credits,
+			'rate-limiter-request-cost' => $request_cost,
 		]);
 
 		$api_endpoint = "{$this->n8n_api_url}?{$api_query}";
