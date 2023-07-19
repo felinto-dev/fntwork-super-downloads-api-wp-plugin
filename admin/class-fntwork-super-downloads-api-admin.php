@@ -143,7 +143,7 @@ class Fntwork_Super_Downloads_Api_Admin
 			'desc' => 'Message shown when ad blocking software is detected. Explain that this can interfere with browser data collection.',
 			'id'   => 'ad_blocking_detected_text',
 			'type' => 'textarea_small',
-			'default' => 'Ad blocking software detected. Please disable this to allow proper data collection.',
+			'default' => 'Please, try to disable the ad blocking software or use another browser',
 		]);
 
 		$rate_limiter_group = $cmb->add_field(array(
