@@ -121,6 +121,8 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
+		$credits_spent_per_download = 0;
+
 		$user_permissions = $this->get_user_role_by_provider_access_permissions();
 
 		$user_has_access = false;
@@ -138,6 +140,7 @@ class Fntwork_Super_Downloads_API_Manager
 						foreach ($user_roles as $user_role) {
 							if (in_array($user_role, $permission_info['role_name'])) {
 								$user_has_access = true;
+								$credits_spent_per_download = $permission_info['credits_spent_per_download'];
 								break;
 							}
 						}
@@ -173,16 +176,16 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 
 		$api_query = http_build_query([
-			'url' => $product_page_url,
-			'key' => $this->get_api_key(),
-			'user-tracking-id' => get_current_user_id(),
-			'user-tracking-ip' =>  $_SERVER['REMOTE_ADDR'],
-			'user-tracking-browser-fingerprint' => $browser_fingerprint,
-			'rate-limiter-user-daily-credits' => $option_data['daily_limit'],
-			'rate-limiter-request-cost' => '0',
-
+			'url' => (string) $product_page_url,
+			'key' => (string) $this->get_api_key(),
+			'user-tracking-id' => (string) get_current_user_id(),
+			'user-tracking-ip' =>  (string) $_SERVER['REMOTE_ADDR'],
+			'user-tracking-browser-fingerprint' => (string) $browser_fingerprint,
+			'rate-limiter-user-daily-credits' => (string) $option_data['rate_limiter_group'][0]['daily_limit'],
+			'rate-limiter-request-cost' => (string) $credits_spent_per_download,
 		]);
-		$api_endpoint = $this->n8n_api_url . '?' . $api_query;
+
+		$api_endpoint = "{$this->n8n_api_url}?{$api_query}";
 		$api_response = wp_remote_request($api_endpoint, [
 			'method'      => 'GET',
 			'timeout'     => 60,
