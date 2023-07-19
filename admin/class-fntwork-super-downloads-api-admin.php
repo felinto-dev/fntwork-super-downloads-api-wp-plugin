@@ -138,6 +138,14 @@ class Fntwork_Super_Downloads_Api_Admin
 			'default' => 'Your user role does not have permission to download this file',
 		]);
 
+		$cmb->add_field([
+			'name' => 'Ad Blocking Software Message',
+			'desc' => 'Message shown when ad blocking software is detected. Explain that this can interfere with browser data collection.',
+			'id'   => 'ad_blocking_detected_text',
+			'type' => 'textarea_small',
+			'default' => 'Ad blocking software detected. Please disable this to allow proper data collection.',
+		]);
+
 		$rate_limiter_group = $cmb->add_field(array(
 			'id' => 'rate_limiter_group',
 			'type' => 'group',
