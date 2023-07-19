@@ -154,7 +154,14 @@ class Fntwork_Super_Downloads_Api_Admin
 			'attributes' => [
 				'type' => 'number',
 			],
-			'sanitization_cb' => 'absint',
+			'sanitization_cb' => function ($value) {
+				$value = intval($value);
+				if ($value < 0) {
+					$value = 0;
+				}
+
+				return $value;
+			},
 		));
 
 		$cmb->add_group_field($rate_limiter_group, array(
@@ -202,11 +209,10 @@ class Fntwork_Super_Downloads_Api_Admin
 				'desc'    => 'This value represents the number of credits that are deducted from a user\'s account each time they download content from a specific provider.',
 				'sanitization_cb' => function ($value) {
 					$value = intval($value);
-					if ($value < 1) {
-						$value = 1;
-					} elseif ($value > 100) {
-						$value = 100;
+					if ($value < 0) {
+						$value = 0;
 					}
+
 					return $value;
 				},
 			));
