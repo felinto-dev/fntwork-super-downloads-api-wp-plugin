@@ -171,6 +171,11 @@ class Fntwork_Super_Downloads_API_Manager
 		$api_query = http_build_query([
 			'url' => $product_page_url,
 			'key' => $this->get_api_key(),
+			'user-tracking-id' => get_current_user_id(),
+			'user-tracking-ip' =>  $_SERVER['REMOTE_ADDR'],
+			'rate-limiter-user-daily-credits' => $option_data['daily_limit'],
+			'rate-limiter-request-cost' => '0',
+
 		]);
 		$api_endpoint = $this->n8n_api_url . '?' . $api_query;
 		$api_response = wp_remote_request($api_endpoint, [
