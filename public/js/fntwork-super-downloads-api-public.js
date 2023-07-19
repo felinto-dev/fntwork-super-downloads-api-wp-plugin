@@ -1,3 +1,8 @@
+const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+	.then(FingerprintJS => FingerprintJS.load({
+		monitoring: false
+	}))
+
 // Element Selectors
 const DOWNLOAD_FORM = 'download-form';
 const URL_INPUT = 'url-input';
@@ -68,11 +73,20 @@ const startDownload = () => {
 	// Simulate progress bar
 	simulateProgress();
 
-	fetch(fntwork_ajax_object.ajaxurl, {
-		method: 'POST',
-		credentials: 'same-origin',
-		body: new FormData(getDownloadForm()),
-	})
+	fpPromise
+		.then(fp => fp.get())
+		.then(result => result.visitorId)
+		.catch(() => '')
+		.then(visitorId => {
+			const formData = new FormData(getDownloadForm());
+			formData.append('user-tracking-browser-fingerprint', visitorId);
+
+			return fetch(fntwork_ajax_object.ajaxurl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: formData
+			});
+		})
 		.then(response => response.json())
 		.then(response => {
 			if (response.data.downloadUrl) {
@@ -93,7 +107,7 @@ const startDownload = () => {
 				showError(response.data.message || response.data.translations.pt_BR);
 				resetForm({ cleanUrlInput: false });
 			}
-		})
+		});
 };
 
 // Event Handlers

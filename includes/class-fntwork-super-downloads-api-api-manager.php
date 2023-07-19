@@ -77,8 +77,14 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 	}
 
-	public function generate_provider_download_url($product_page_url)
+	public function generate_provider_download_url($product_page_url, $browser_fingerprint)
 	{
+		if (!preg_match('/^[0-9a-f]{32}$/i', $browser_fingerprint)) {
+			return [
+				'message' => 'Verifique seu adblock ou troque de navegador!',
+			];
+		}
+
 		$option_data = $this->get_option_data();
 
 		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
@@ -171,6 +177,7 @@ class Fntwork_Super_Downloads_API_Manager
 			'key' => $this->get_api_key(),
 			'user-tracking-id' => get_current_user_id(),
 			'user-tracking-ip' =>  $_SERVER['REMOTE_ADDR'],
+			'user-tracking-browser-fingerprint' => $browser_fingerprint,
 			'rate-limiter-user-daily-credits' => $option_data['daily_limit'],
 			'rate-limiter-request-cost' => '0',
 
