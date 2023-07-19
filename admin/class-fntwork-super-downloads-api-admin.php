@@ -108,9 +108,9 @@ class Fntwork_Super_Downloads_Api_Admin
 			'id'   => 'same_file_interval',
 			'type' => 'text_small',
 			'default' => 60,
-			'attributes' => array(
+			'attributes' => [
 				'type' => 'number',
-			),
+			],
 			'sanitization_cb' => 'absint',
 		]);
 
@@ -151,6 +151,9 @@ class Fntwork_Super_Downloads_Api_Admin
 			'id' => 'daily_limit',
 			'type' => 'text_small',
 			'default' => 20,
+			'attributes' => [
+				'type' => 'number',
+			],
 			'sanitization_cb' => 'absint',
 		));
 
