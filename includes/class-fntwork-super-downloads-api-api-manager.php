@@ -81,12 +81,6 @@ class Fntwork_Super_Downloads_API_Manager
 	{
 		$option_data = $this->get_option_data();
 
-		if (!preg_match('/^[0-9a-f]{32}$/i', $browser_fingerprint)) {
-			return [
-				'message' => $option_data['ad_blocking_detected_text'],
-			];
-		}
-
 		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
 		$transient_value = get_transient($transient_name);
 

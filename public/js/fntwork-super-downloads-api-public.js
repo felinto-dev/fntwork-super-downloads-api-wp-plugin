@@ -76,7 +76,7 @@ const startDownload = () => {
 	fpPromise
 		.then(fp => fp.get())
 		.then(result => result.visitorId)
-		.catch(() => '')
+		.catch(() => 'UNKNOWN-BROWSER-FINGERPRINT')
 		.then(visitorId => {
 			const formData = new FormData(getDownloadForm());
 			formData.append('user-tracking-browser-fingerprint', visitorId);
