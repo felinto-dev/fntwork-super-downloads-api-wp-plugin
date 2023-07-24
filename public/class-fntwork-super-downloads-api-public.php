@@ -57,6 +57,7 @@ class Fntwork_Super_Downloads_Api_Public
 		$this->version = $version;
 		$this->api_manager = $api_manager;
 
+		do_action('super-downloads-api-shortcode');
 		add_shortcode('super-downloads-api', array($this, 'super_downloads_api_shortcode'));
 		add_action('wp_ajax_process_download_form', array($this, 'process_download_form'));
 		add_action('wp_ajax_nopriv_process_download_form', array($this, 'process_download_form'));
