@@ -81,17 +81,6 @@ class Fntwork_Super_Downloads_API_Manager
 	{
 		$option_data = $this->get_option_data();
 
-		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
-		$transient_value = get_transient($transient_name);
-
-		if ($transient_value) {
-			return [
-				'message' => $option_data['same_file_interval_text'],
-			];
-		} else {
-			set_transient($transient_name, true, $option_data['same_file_interval']);
-		}
-
 		$providers = $this->get_providers();
 		$provider_nickname = null;
 
@@ -157,6 +146,17 @@ class Fntwork_Super_Downloads_API_Manager
 			return [
 				'message' => $option_data['permission_denied_text'],
 			];
+		}
+
+		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
+		$transient_value = get_transient($transient_name);
+
+		if ($transient_value) {
+			return [
+				'message' => $option_data['same_file_interval_text'],
+			];
+		} else {
+			set_transient($transient_name, true, $option_data['same_file_interval']);
 		}
 
 		$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
