@@ -13,8 +13,6 @@
  */
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
 <div id="super-downloads-api">
 	<?php
 	if (is_user_logged_in()) : ?>
