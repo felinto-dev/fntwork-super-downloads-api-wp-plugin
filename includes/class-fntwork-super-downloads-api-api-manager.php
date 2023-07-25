@@ -187,6 +187,9 @@ class Fntwork_Super_Downloads_API_Manager
 		$api_response = wp_remote_request($api_endpoint, [
 			'method'      => 'GET',
 			'timeout'     => 60,
+			'headers'     => [
+				"x-plugin-version" => $this->version,
+			],
 		]);
 		$response_body = wp_remote_retrieve_body($api_response);
 		$response_data = json_decode($response_body, true);
