@@ -39,6 +39,7 @@
 	border: 1px solid var(--sda-input-bg-color);
 	border-radius: 4px;
 	width: 70%;
+	font-weight: lighter;
 }
 
 #super-downloads-api button {
