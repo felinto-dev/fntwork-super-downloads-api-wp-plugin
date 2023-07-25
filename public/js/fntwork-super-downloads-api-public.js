@@ -11,7 +11,7 @@ const PROGRESS_BAR = 'progress-bar';
 const PROGRESS_TIME = 'progress-time'; // Added selector for time display
 
 // Progress simulation parameters
-const PROGRESS_DURATION = 10 * 1000; // 10 seconds
+const PROGRESS_DURATION = 15 * 1000; // 15 seconds
 const TIME_UPDATE_FREQUENCY = 100; // Update time every 100ms
 
 // Function to simulate progress bar
