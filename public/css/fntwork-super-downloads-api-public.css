@@ -77,3 +77,10 @@
 	width: 100%;
 	background-color: var(--sda-progress-bar-container-color);
 }
+
+#super-downloads-api #progress-container #progress-time {
+	display: none;
+	color: white;
+	justify-content: center;
+	align-items: center;
+}

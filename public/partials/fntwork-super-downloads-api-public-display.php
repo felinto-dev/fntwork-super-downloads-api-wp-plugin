@@ -81,7 +81,9 @@
 		</form>
 		<p class="error" id="error-msg">Algo deu errado ao buscar seu link, verifique a URL e tente novamente!</p>
 		<div id="progress-container">
-			<div id="progress-bar"></div>
+			<div id="progress-bar">
+				<span id="progress-time">0s</span>
+			</div>
 		</div>
 	<?php else : ?>
 		<p class="error" style="display: block;">Você precisa estar logado para acessar esta página.</p>

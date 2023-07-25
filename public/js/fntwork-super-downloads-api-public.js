@@ -8,14 +8,17 @@ const DOWNLOAD_FORM = 'download-form';
 const URL_INPUT = 'url-input';
 const ERROR_MSG = 'error-msg';
 const PROGRESS_BAR = 'progress-bar';
+const PROGRESS_TIME = 'progress-time'; // Added selector for time display
 
 // Progress simulation parameters
-const PROGRESS_DURATION = 20 * 1000; // 20 seconds
+const PROGRESS_DURATION = 10 * 1000; // 10 seconds
+const TIME_UPDATE_FREQUENCY = 100; // Update time every 100ms
 
 // Function to simulate progress bar
 let simulateProgress = (() => {
-	let startTimestamp, progress, animationFrameId;
+	let startTimestamp, progress;
 	let stopAnimation = false;
+	let lastTimeUpdateTimestamp = 0;
 
 	const resetProgress = () => {
 		startTimestamp = null;
@@ -23,14 +26,23 @@ let simulateProgress = (() => {
 		progress = 0;
 	};
 
+	const SHOW_TIME_AFTER = 2000; // Show time after 2 seconds
+
 	const step = (timestamp) => {
 		if (!startTimestamp) startTimestamp = timestamp;
 		const elapsed = timestamp - startTimestamp;
 
+		// Update time every TIME_UPDATE_FREQUENCY ms and after SHOW_TIME_AFTER ms
+		if ((timestamp - lastTimeUpdateTimestamp >= TIME_UPDATE_FREQUENCY) && (elapsed > SHOW_TIME_AFTER)) {
+			getProgressTime().innerText = ((elapsed) / 1000).toFixed(1) + "s";
+			lastTimeUpdateTimestamp = timestamp;
+			getProgressTime().style.display = 'flex';
+		}
+
 		progress = Math.min(99, (elapsed / PROGRESS_DURATION) * 100);
 		getProgressBar().style.width = progress + "%";
 
-		if (progress < 99 && !stopAnimation) {
+		if (!stopAnimation) {
 			requestAnimationFrame(step);
 		}
 	};
@@ -46,6 +58,7 @@ const getDownloadForm = () => document.getElementById(DOWNLOAD_FORM);
 const getUrlInput = () => document.getElementById(URL_INPUT);
 const getErrorMsg = () => document.getElementById(ERROR_MSG);
 const getProgressBar = () => document.getElementById(PROGRESS_BAR);
+const getProgressTime = () => document.getElementById(PROGRESS_TIME); // Added getter for time display
 
 // UI Control functions
 const showError = (msg) => {
@@ -58,6 +71,9 @@ const resetForm = ({ cleanUrlInput }) => {
 	const progressBar = getProgressBar();
 	progressBar.style.display = 'none';
 	progressBar.style.width = '0%';
+
+	// Reset progress time
+	getProgressTime().innerText = '';
 
 	if (cleanUrlInput) {
 		getUrlInput().value = '';
