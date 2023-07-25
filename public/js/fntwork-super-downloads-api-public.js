@@ -10,7 +10,7 @@ const ERROR_MSG = 'error-msg';
 const PROGRESS_BAR = 'progress-bar';
 
 // Progress simulation parameters
-const PROGRESS_DURATION = 30 * 1000; // 30 seconds
+const PROGRESS_DURATION = 20 * 1000; // 20 seconds
 
 // Function to simulate progress bar
 let simulateProgress = (() => {
