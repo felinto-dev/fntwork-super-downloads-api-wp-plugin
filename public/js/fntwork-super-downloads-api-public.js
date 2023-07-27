@@ -8,6 +8,8 @@ const URL_INPUT = 'url-input';
 const ERROR_MSG = 'error-msg';
 const PROGRESS_BAR = 'progress-bar';
 const PROGRESS_TIME = 'progress-time';
+const EXTRA_DOWNLOAD_OPTIONS = 'extra-download-options';
+const DOWNLOAD_OPTIONS_LINKS = 'extra-download-options-links';
 
 // Parâmetros para a simulação do progresso do download
 const PROGRESS_DURATION = 15 * 1000;
@@ -28,6 +30,8 @@ const getUrlInput = () => document.getElementById(URL_INPUT);
 const getErrorMsg = () => document.getElementById(ERROR_MSG);
 const getProgressBar = () => document.getElementById(PROGRESS_BAR);
 const getProgressTime = () => document.getElementById(PROGRESS_TIME);
+const getExtraDownloadOptions = () => document.getElementById(EXTRA_DOWNLOAD_OPTIONS);
+const getDownloadOptionsLinks = () => document.getElementById(DOWNLOAD_OPTIONS_LINKS);
 
 // Funções de controle da interface do usuário
 const showError = (msg) => {
@@ -37,6 +41,8 @@ const showError = (msg) => {
 };
 
 const resetForm = ({ cleanUrlInput }) => {
+	getDownloadOptionsLinks().innerHTML = '';
+
 	const progressBar = getProgressBar();
 	progressBar.style.display = 'none';
 	progressBar.style.width = '0%';
@@ -95,6 +101,8 @@ const startDownload = () => {
 	getProgressBar().style.display = 'block';
 	getErrorMsg().style.display = 'none';
 	getDownloadForm().style.display = 'none';
+	getExtraDownloadOptions().style.display = 'none';
+	getDownloadOptionsLinks().innerHTML = '';
 	simulateProgress.start();
 	getVisitorId().then(visitorId => {
 		const formData = new FormData(getDownloadForm());
@@ -122,6 +130,33 @@ const startDownload = () => {
 				simulateProgress.stop();
 				window.location.href = response.data.downloadUrl;
 				resetForm({ cleanUrlInput: true });
+			} else if (response.data.code === '1007') {
+				getExtraDownloadOptions().style.display = 'flex';
+				const links = getDownloadOptionsLinks();
+				const downloadOptions = response.data.downloadOptions;
+
+				simulateProgress.stop();
+				resetForm({ cleanUrlInput: false });
+
+				downloadOptions.forEach((downloadOption) => {
+					const button = document.createElement("button");
+					button.id = downloadOption.id;
+					button.innerHTML = downloadOption.title;
+					button.type = 'submit';
+					button.addEventListener('click', (event) => {
+						event.preventDefault();
+
+						const inputHiddenDownloadOptionId = document.createElement('input');
+						inputHiddenDownloadOptionId.type = 'hidden';
+						inputHiddenDownloadOptionId.name = 'downloadOptionId';
+						inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
+						getDownloadForm().appendChild(inputHiddenDownloadOptionId);
+
+						resetForm({ cleanUrlInput: false });
+						startDownload();
+					})
+					links.appendChild(button);
+				});
 			} else {
 				showError(response.data.message || response.data.translations.pt_BR);
 				simulateProgress.stop();

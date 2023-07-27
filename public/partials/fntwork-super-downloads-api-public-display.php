@@ -91,11 +91,7 @@
 					Selecione o formato do arquivo que você deseja fazer download:
 				</span>
 			</div>
-			<div id="extra-download-options-links">
-				<button type="submit">4K / 4096 x 2160 / MP4</button>
-				<button type="submit">4K / 3840 x 2160 / MP4</button>
-				<button type="submit">hd / 1920 x 1080 / MP4</button>
-			</div>
+			<div id="extra-download-options-links"></div>
 		</div>
 	<?php else : ?>
 		<p class="error" style="display: block;">Você precisa estar logado para acessar esta página.</p>
