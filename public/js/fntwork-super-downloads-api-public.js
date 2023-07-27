@@ -94,6 +94,7 @@ const simulateProgress = (() => {
 const startDownload = () => {
 	getProgressBar().style.display = 'block';
 	getErrorMsg().style.display = 'none';
+	getDownloadForm().style.display = 'none';
 	simulateProgress.start();
 	getVisitorId().then(visitorId => {
 		const formData = new FormData(getDownloadForm());
@@ -105,6 +106,8 @@ const startDownload = () => {
 		});
 	}).then(response => response.json())
 		.then(response => {
+			getDownloadForm().style.display = 'flex';
+
 			if (response.data.downloadUrl) {
 				confetti({
 					particleCount: 150,
