@@ -85,6 +85,18 @@
 				<span id="progress-time">0s</span>
 			</div>
 		</div>
+		<div id="extra-download-options">
+			<div>
+				<span id="extra-download-options-heading">
+					Selecione o formato do arquivo que você deseja fazer download:
+				</span>
+			</div>
+			<div id="extra-download-options-links">
+				<button type="submit">4K / 4096 x 2160 / MP4</button>
+				<button type="submit">4K / 3840 x 2160 / MP4</button>
+				<button type="submit">hd / 1920 x 1080 / MP4</button>
+			</div>
+		</div>
 	<?php else : ?>
 		<p class="error" style="display: block;">Você precisa estar logado para acessar esta página.</p>
 		<a href="<?php echo wp_login_url(get_permalink()); ?>">Clique aqui para fazer login</a>
