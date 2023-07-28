@@ -78,10 +78,12 @@ class Fntwork_Super_Downloads_Api_Public
 		check_ajax_referer('download_form_nonce');
 		$download_url_input = esc_url($_POST['url-input']);
 		$browser_fingerprint = $_POST['user-tracking-browser-fingerprint'];
+		$download_option_id = $_POST['download-option-id'];
 
 		$response_data = $this->api_manager->generate_provider_download_url(
 			$download_url_input,
 			$browser_fingerprint,
+			$download_option_id
 		);
 
 		if (!$response_data || !isset($response_data['code'])) {

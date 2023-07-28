@@ -77,7 +77,7 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 	}
 
-	public function generate_provider_download_url($product_page_url, $browser_fingerprint)
+	public function generate_provider_download_url($product_page_url, $browser_fingerprint, $download_option_id)
 	{
 		$option_data = $this->get_option_data();
 
@@ -181,6 +181,7 @@ class Fntwork_Super_Downloads_API_Manager
 			'user-tracking-browser-fingerprint' => (string) $browser_fingerprint,
 			'rate-limiter-user-daily-credits' => $user_daily_credits,
 			'rate-limiter-request-cost' => $request_cost,
+			'download-option-id' => $download_option_id,
 		]);
 
 		$api_endpoint = "{$this->n8n_api_url}?{$api_query}";
