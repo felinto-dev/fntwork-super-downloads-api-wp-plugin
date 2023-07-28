@@ -146,11 +146,18 @@ const startDownload = () => {
 					button.addEventListener('click', (event) => {
 						event.preventDefault();
 
-						const inputHiddenDownloadOptionId = document.createElement('input');
-						inputHiddenDownloadOptionId.type = 'hidden';
-						inputHiddenDownloadOptionId.name = 'downloadOptionId';
-						inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
-						getDownloadForm().appendChild(inputHiddenDownloadOptionId);
+						const downloadForm = getDownloadForm();
+						let inputHiddenDownloadOptionId = downloadForm.querySelector('input[name="download-option-id"]');
+
+						if (inputHiddenDownloadOptionId) {
+							inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
+						} else {
+							inputHiddenDownloadOptionId = document.createElement('input');
+							inputHiddenDownloadOptionId.type = 'hidden';
+							inputHiddenDownloadOptionId.name = 'download-option-id';
+							inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
+							downloadForm.appendChild(inputHiddenDownloadOptionId);
+						}
 
 						resetForm({ cleanUrlInput: false });
 						startDownload();
