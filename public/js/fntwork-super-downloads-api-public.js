@@ -40,7 +40,7 @@ const showError = (msg) => {
 	errorMsg.innerHTML = msg;
 };
 
-const resetForm = ({ cleanUrlInput }) => {
+const resetForm = ({ cleanUrlInput, cleanDownloadOptionId }) => {
 	getDownloadOptionsLinks().innerHTML = '';
 
 	const progressBar = getProgressBar();
@@ -54,6 +54,13 @@ const resetForm = ({ cleanUrlInput }) => {
 
 	if (cleanUrlInput) {
 		getUrlInput().value = '';
+	}
+
+	const downloadForm = getDownloadForm();
+	const inputHiddenDownloadOptionId = downloadForm.querySelector('input[name="download-option-id"]');
+
+	if (inputHiddenDownloadOptionId && cleanDownloadOptionId) {
+		downloadForm.removeChild(inputHiddenDownloadOptionId);
 	}
 };
 
@@ -104,6 +111,7 @@ const startDownload = () => {
 	getExtraDownloadOptions().style.display = 'none';
 	getDownloadOptionsLinks().innerHTML = '';
 	simulateProgress.start();
+
 	getVisitorId().then(visitorId => {
 		const formData = new FormData(getDownloadForm());
 		formData.append('user-tracking-browser-fingerprint', visitorId);
@@ -129,14 +137,14 @@ const startDownload = () => {
 				});
 				simulateProgress.stop();
 				window.location.href = response.data.downloadUrl;
-				resetForm({ cleanUrlInput: true });
+				resetForm({ cleanUrlInput: true, cleanDownloadOptionId: true });
 			} else if (response.data.code === '1007') {
 				getExtraDownloadOptions().style.display = 'flex';
 				const links = getDownloadOptionsLinks();
 				const downloadOptions = response.data.downloadOptions;
 
 				simulateProgress.stop();
-				resetForm({ cleanUrlInput: false });
+				resetForm({ cleanUrlInput: false, cleanDownloadOptionId: false });
 
 				downloadOptions.forEach((downloadOption) => {
 					const button = document.createElement("button");
@@ -159,7 +167,7 @@ const startDownload = () => {
 							downloadForm.appendChild(inputHiddenDownloadOptionId);
 						}
 
-						resetForm({ cleanUrlInput: false });
+						resetForm({ cleanUrlInput: false, cleanDownloadOptionId: false });
 						startDownload();
 					})
 					links.appendChild(button);
@@ -167,7 +175,7 @@ const startDownload = () => {
 			} else {
 				showError(response.data.message || response.data.translations.pt_BR);
 				simulateProgress.stop();
-				resetForm({ cleanUrlInput: false });
+				resetForm({ cleanUrlInput: false, cleanDownloadOptionId: true });
 			}
 		});
 };
