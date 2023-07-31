@@ -32,6 +32,7 @@ const getProgressBar = () => document.getElementById(PROGRESS_BAR);
 const getProgressTime = () => document.getElementById(PROGRESS_TIME);
 const getExtraDownloadOptions = () => document.getElementById(EXTRA_DOWNLOAD_OPTIONS);
 const getDownloadOptionsLinks = () => document.getElementById(DOWNLOAD_OPTIONS_LINKS);
+const getInputHiddenDownloadOptionId = () => getDownloadForm().querySelector('input[name="download-option-id"]');
 
 // Funções de controle da interface do usuário
 const showError = (msg) => {
@@ -47,7 +48,6 @@ const resetForm = ({ cleanUrlInput, cleanDownloadOptionId }) => {
 	progressBar.style.display = 'none';
 	progressBar.style.width = '0%';
 
-	// Reset and hide progress time
 	const progressTime = getProgressTime();
 	progressTime.innerText = '';
 	progressTime.style.display = 'none';
@@ -56,11 +56,9 @@ const resetForm = ({ cleanUrlInput, cleanDownloadOptionId }) => {
 		getUrlInput().value = '';
 	}
 
-	const downloadForm = getDownloadForm();
-	const inputHiddenDownloadOptionId = downloadForm.querySelector('input[name="download-option-id"]');
-
+	const inputHiddenDownloadOptionId = getInputHiddenDownloadOptionId();
 	if (inputHiddenDownloadOptionId && cleanDownloadOptionId) {
-		downloadForm.removeChild(inputHiddenDownloadOptionId);
+		getDownloadForm().removeChild(inputHiddenDownloadOptionId);
 	}
 };
 
@@ -155,16 +153,16 @@ const startDownload = () => {
 						event.preventDefault();
 
 						const downloadForm = getDownloadForm();
-						let inputHiddenDownloadOptionId = downloadForm.querySelector('input[name="download-option-id"]');
+						const inputHiddenDownloadOptionId = getInputHiddenDownloadOptionId();
 
 						if (inputHiddenDownloadOptionId) {
 							inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
 						} else {
-							inputHiddenDownloadOptionId = document.createElement('input');
-							inputHiddenDownloadOptionId.type = 'hidden';
-							inputHiddenDownloadOptionId.name = 'download-option-id';
-							inputHiddenDownloadOptionId.value = event.target.getAttribute('id');
-							downloadForm.appendChild(inputHiddenDownloadOptionId);
+							const element = document.createElement('input');
+							element.type = 'hidden';
+							element.name = 'download-option-id';
+							element.value = event.target.getAttribute('id');
+							downloadForm.appendChild(element);
 						}
 
 						resetForm({ cleanUrlInput: false, cleanDownloadOptionId: false });
