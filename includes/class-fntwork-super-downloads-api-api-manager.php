@@ -173,24 +173,32 @@ class Fntwork_Super_Downloads_API_Manager
 		$user_daily_credits = apply_filters('super_downloads_api_user_daily_credits', (string) $option_data['rate_limiter_group'][0]['daily_limit']);
 		$request_cost = apply_filters('super_downloads_api_download_credit_cost', (string) $credits_spent_per_download);
 
-		$api_query = http_build_query([
-			'url' => (string) $product_page_url,
+		$api_body = json_encode([
+			'downloadParams' => [
+				'url' => (string) $product_page_url,
+				'optionId' => (string) $download_option_id
+			],
 			'key' => (string) $this->get_api_key(),
-			'user-tracking-id' => (string) get_current_user_id(),
-			'user-tracking-ip' =>  (string) $_SERVER['REMOTE_ADDR'],
-			'user-tracking-browser-fingerprint' => (string) $browser_fingerprint,
-			'rate-limiter-user-daily-credits' => $user_daily_credits,
-			'rate-limiter-request-cost' => $request_cost,
-			'download-option-id' => $download_option_id,
+			'userTracking' => [
+				'id' => (string) get_current_user_id(),
+				'ip' => (string) $_SERVER['REMOTE_ADDR'],
+				'browserFingerprint' => (string) $browser_fingerprint
+			],
+			'rateLimiter' => [
+				'userDailyCredits' => (string) $user_daily_credits,
+				'requestCost' => (string) $request_cost
+			]
 		]);
 
-		$api_endpoint = "{$this->n8n_api_url}?{$api_query}";
+		$api_endpoint = "{$this->n8n_api_url}/download";
 		$api_response = wp_remote_request($api_endpoint, [
-			'method'      => 'GET',
+			'method'      => 'POST',
 			'timeout'     => 60,
 			'headers'     => [
+				"Content-Type" => "application/json",
 				"x-plugin-version" => $this->version,
 			],
+			'body'        => $api_body
 		]);
 		$response_body = wp_remote_retrieve_body($api_response);
 		$response_data = json_decode($response_body, true);
