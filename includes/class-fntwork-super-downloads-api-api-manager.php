@@ -148,26 +148,28 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		$transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url);
-		$transient_value = get_transient($transient_name);
+		$same_file_download_transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url . $download_option_id);
+		$same_file_download_transient_value = get_transient($same_file_download_transient_name);
 
-		if ($transient_value) {
+		if ($same_file_download_transient_value) {
 			return [
 				'message' => $option_data['same_file_interval_text'],
 			];
 		} else {
-			set_transient($transient_name, true, $option_data['same_file_interval']);
+			set_transient($same_file_download_transient_name, true, $option_data['same_file_interval']);
 		}
 
-		$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
-		$recent_download_transient_value = get_transient($recent_download_transient_name);
+		if (!isset($download_option_id)) {
+			$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
+			$recent_download_transient_value = get_transient($recent_download_transient_name);
 
-		if ($recent_download_transient_value) {
-			return [
-				'message' => $option_data['download_interval_text'],
-			];
-		} else {
-			set_transient($recent_download_transient_name, true, $option_data['download_interval']);
+			if ($recent_download_transient_value) {
+				return [
+					'message' => $option_data['download_interval_text'],
+				];
+			} else {
+				set_transient($recent_download_transient_name, true, $option_data['download_interval']);
+			}
 		}
 
 		$user_daily_credits = apply_filters('super_downloads_api_user_daily_credits', (string) $option_data['rate_limiter_group'][0]['daily_limit']);
