@@ -22,7 +22,7 @@
 	<?php
 	if (is_user_logged_in()) : ?>
 		<form id="download-form">
-			<?php wp_nonce_field('download_form_no\nce'); ?>
+			<?php wp_nonce_field('download_form_nonce'); ?>
 			<input type="hidden" name="action" value="process_download_form">
 			<input type="url" name="url-input" id="url-input" placeholder="Cole aqui o link" required autofocus>
 			<button type="submit" id="download-btn">
