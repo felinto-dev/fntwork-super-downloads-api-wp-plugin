@@ -16,7 +16,7 @@
  * Plugin Name:       Super Downloads API
  * Plugin URI:        https://t.me/felinto
  * Description:       Plugin para integração do WordPress com a plataforma Super Downloads API.
- * Version:           1.0.20
+ * Version:           1.0.21
  * Author:            Felinto
  * Author URI:        https://t.me/felinto
  * License:           GPL-2.0+
@@ -41,7 +41,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FNTWORK_SUPER_DOWNLOADS_API_VERSION', '1.0.20' );
+define( 'FNTWORK_SUPER_DOWNLOADS_API_VERSION', '1.0.21' );
 
 /**
  * The code that runs during plugin activation.
