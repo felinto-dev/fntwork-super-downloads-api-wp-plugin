@@ -196,10 +196,11 @@ class Fntwork_Super_Downloads_Api_Admin
 
 		foreach ($providers as $provider) {
 			$provider_nickname = $provider['attributes']['nickname'];
+			$sanitized_nickname = sanitize_title_with_dashes($provider_nickname);
 			$provider_description = 'Manage Access for Provider: ' . $provider_nickname;
 
 			$group_field_id = $cmb->add_field(array(
-				'id'          => "{$provider_nickname}_provider_options",
+				'id'          => "{$sanitized_nickname}_provider_options",
 				'type'        => 'group',
 				'description' => $provider_description,
 				'repeatable'  => false,
