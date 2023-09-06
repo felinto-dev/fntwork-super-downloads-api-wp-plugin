@@ -174,6 +174,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 		$user_daily_credits = apply_filters('super_downloads_api_user_daily_credits', (string) $option_data['rate_limiter_group'][0]['daily_limit']);
 		$request_cost = apply_filters('super_downloads_api_download_credit_cost', (string) $credits_spent_per_download);
+		$user_tracking_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
 		$api_body = json_encode([
 			'downloadParams' => [
@@ -182,9 +183,10 @@ class Fntwork_Super_Downloads_API_Manager
 			],
 			'key' => (string) $this->get_api_key(),
 			'userTracking' => [
-				'id' => (string) get_current_user_id(),
+				'id' => $user_tracking_id,
 				'ip' => (string) $_SERVER['REMOTE_ADDR'],
-				'browserFingerprint' => (string) $browser_fingerprint
+				'browserFingerprint' => (string) $browser_fingerprint,
+				'browserUserAgent' => (string) $_SERVER['HTTP_USER_AGENT'],
 			],
 			'rateLimiter' => [
 				'userDailyCredits' => (string) $user_daily_credits,
