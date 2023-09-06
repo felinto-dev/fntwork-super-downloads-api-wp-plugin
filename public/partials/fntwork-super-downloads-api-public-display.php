@@ -92,9 +92,9 @@
 		</div>
 		<div id="extra-download-options">
 			<div>
-				<span id="extra-download-options-heading">
+				<p id="extra-download-options-heading">
 					Selecione o formato do arquivo que você deseja fazer download:
-				</span>
+				</p>
 			</div>
 			<div id="extra-download-options-links"></div>
 		</div>
