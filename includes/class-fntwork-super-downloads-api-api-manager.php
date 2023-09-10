@@ -104,7 +104,7 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		$credits_spent_per_download = 0;
+		$credits_spent_per_download = 1;
 
 		$user_permissions = $this->get_user_role_by_provider_access_permissions();
 
