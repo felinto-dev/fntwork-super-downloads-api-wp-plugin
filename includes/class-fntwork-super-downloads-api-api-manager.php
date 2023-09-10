@@ -183,7 +183,7 @@ class Fntwork_Super_Downloads_API_Manager
 			],
 			'key' => (string) $this->get_api_key(),
 			'userTracking' => [
-				'id' => $user_tracking_id,
+				'id' => (string) $user_tracking_id,
 				'ip' => (string) $_SERVER['REMOTE_ADDR'],
 				'browserFingerprint' => (string) $browser_fingerprint,
 				'browserUserAgent' => (string) $_SERVER['HTTP_USER_AGENT'],
