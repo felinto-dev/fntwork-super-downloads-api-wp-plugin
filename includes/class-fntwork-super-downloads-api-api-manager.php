@@ -32,6 +32,9 @@ class Fntwork_Super_Downloads_API_Manager
 		return $this->get_option_data()['api_key'];
 	}
 
+	/**
+	 * Filter out any options that don't have a role_name and provider_nickname
+	 */
 	public function get_user_role_by_provider_access_permissions()
 	{
 		$option_data = $this->get_option_data();
