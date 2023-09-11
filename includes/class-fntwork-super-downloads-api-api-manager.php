@@ -41,6 +41,9 @@ class Fntwork_Super_Downloads_API_Manager
 
 		$filtered_option_data = [];
 
+		/**
+		 * Filter out any options that don't have a role_name and provider_nickname
+		 */
 		foreach ($option_data as $key => $value) {
 			if (is_array($value) && isset($value[0]['role_name']) && isset($value[0]['provider_nickname'])) {
 				$filtered_option_data[$key] = $value;
