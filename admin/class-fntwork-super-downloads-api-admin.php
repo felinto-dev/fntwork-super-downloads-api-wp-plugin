@@ -58,6 +58,20 @@ class Fntwork_Super_Downloads_Api_Admin
 		$this->api_manager = $api_manager;
 	}
 
+	/**
+	 * Reset the plugin settings when the options page is saved
+	 */
+	public function before_save_metabox(bool $can_save, CMB2 $cmb)
+	{
+		$option_key = $this->api_manager->get_option_key();
+
+		if ($can_save && $cmb->options_page_keys()[0] === $option_key) {
+			delete_option($option_key);
+		}
+
+		return $can_save;
+	}
+
 	public function super_downloads_api_options_metabox()
 	{
 		$prefix = $this->plugin_name;
@@ -72,6 +86,8 @@ class Fntwork_Super_Downloads_Api_Admin
 			'option_key'   => $option_key,
 			'icon_url'     => 'dashicons-download',
 		]);
+
+		do_action('qm/debug', "CMB2 Option key: {$cmb->options_page_keys()[0]}");
 
 		$cmb->add_field([
 			'id' => 'api_key',
@@ -195,12 +211,12 @@ class Fntwork_Super_Downloads_Api_Admin
 		}
 
 		foreach ($providers as $provider) {
+			$provider_id = $provider['attributes']['provider_id'];
 			$provider_nickname = $provider['attributes']['nickname'];
-			$sanitized_nickname = sanitize_title_with_dashes($provider_nickname);
 			$provider_description = 'Manage Access for Provider: ' . $provider_nickname;
 
 			$group_field_id = $cmb->add_field(array(
-				'id'          => "{$sanitized_nickname}_provider_options",
+				'id'          => "{$provider_id}_provider_options",
 				'type'        => 'group',
 				'description' => $provider_description,
 				'repeatable'  => false,

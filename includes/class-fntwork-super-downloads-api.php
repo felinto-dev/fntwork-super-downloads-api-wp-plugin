@@ -161,6 +161,7 @@ class Fntwork_Super_Downloads_Api
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('cmb2_admin_init', $plugin_admin, 'super_downloads_api_options_metabox');
+		$this->loader->add_filter('cmb2_can_save', $plugin_admin, 'before_save_metabox', 10, 2);
 	}
 
 	/**
