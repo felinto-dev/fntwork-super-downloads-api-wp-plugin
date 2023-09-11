@@ -43,6 +43,8 @@ class Fntwork_Super_Downloads_Api_Admin
 
 	private $api_manager;
 
+	private $settings_manager;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -50,12 +52,17 @@ class Fntwork_Super_Downloads_Api_Admin
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version, $api_manager)
-	{
+	public function __construct(
+		string $plugin_name,
+		string $version,
+		Fntwork_Super_Downloads_API_Manager $api_manager,
+		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager
+	) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->api_manager = $api_manager;
+		$this->settings_manager = $settings_manager;
 	}
 
 	/**
@@ -63,7 +70,7 @@ class Fntwork_Super_Downloads_Api_Admin
 	 */
 	public function before_save_metabox(bool $can_save, CMB2 $cmb)
 	{
-		$option_key = $this->api_manager->get_option_key();
+		$option_key = $this->settings_manager->get_option_key();
 
 		if ($can_save && $cmb->options_page_keys()[0] === $option_key) {
 			delete_option($option_key);
@@ -75,7 +82,7 @@ class Fntwork_Super_Downloads_Api_Admin
 	public function super_downloads_api_options_metabox()
 	{
 		$prefix = $this->plugin_name;
-		$option_key = $this->api_manager->get_option_key();
+		$option_key = $this->settings_manager->get_option_key();
 
 		do_action('qm/debug', get_option($option_key));
 

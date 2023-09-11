@@ -7,50 +7,18 @@ class Fntwork_Super_Downloads_API_Manager
 	private $n8n_api_url;
 	private $plugin_name;
 	private $version;
+	private $settings_manager;
 
-	public function __construct($plugin_name, $version)
-	{
+	public function __construct(
+		string $plugin_name,
+		string $version,
+		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager
+	) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->strapi_api_url = 'https://strapi.fnt.work/api';
 		$this->n8n_api_url = 'https://n8n.fnt.work/webhook/super-downloads-api';
-	}
-
-	public function get_option_key()
-	{
-		return $this->plugin_name . '-settings';
-	}
-
-	public function get_option_data()
-	{
-		$option_key = $this->get_option_key();
-		return get_option($option_key);
-	}
-
-	public function get_api_key()
-	{
-		return $this->get_option_data()['api_key'];
-	}
-
-	/**
-	 * Filter out any options that don't have a role_name and provider_nickname
-	 */
-	public function get_user_role_by_provider_access_permissions()
-	{
-		$option_data = $this->get_option_data();
-
-		$filtered_option_data = [];
-
-		/**
-		 * Filter out any options that don't have a role_name and provider_nickname
-		 */
-		foreach ($option_data as $key => $value) {
-			if (is_array($value) && isset($value[0]['role_name']) && isset($value[0]['provider_nickname'])) {
-				$filtered_option_data[$key] = $value;
-			}
-		}
-
-		return $filtered_option_data;
+		$this->settings_manager = $settings_manager;
 	}
 
 	public function get_providers()
@@ -85,7 +53,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function generate_provider_download_url($product_page_url, $browser_fingerprint, $download_option_id)
 	{
-		$option_data = $this->get_option_data();
+		$user_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
 		$providers = $this->get_providers();
 		$provider_nickname = null;
@@ -106,13 +74,13 @@ class Fntwork_Super_Downloads_API_Manager
 
 		if ($provider_nickname == null) {
 			return [
-				'message' => $option_data['unsupported_service_text'],
+				'message' => $this->settings_manager->get_unsupported_service_text(),
 			];
 		}
 
 		$credits_spent_per_download = 1;
 
-		$user_permissions = $this->get_user_role_by_provider_access_permissions();
+		$user_permissions = $this->settings_manager->get_user_role_by_provider_access_permissions();
 
 		$user_has_access = false;
 
@@ -150,35 +118,34 @@ class Fntwork_Super_Downloads_API_Manager
 
 		if (!$user_has_access) {
 			return [
-				'message' => $option_data['permission_denied_text'],
+				'message' => $this->settings_manager->get_permission_denied_text(),
 			];
 		}
 
-		$same_file_download_transient_name = 'user_' . get_current_user_id() . '_url_' . md5($product_page_url . $download_option_id);
+		$same_file_download_transient_name = 'user_' . $user_id . '_url_' . md5($product_page_url . $download_option_id);
 		$same_file_download_transient_value = get_transient($same_file_download_transient_name);
 
 		if ($same_file_download_transient_value) {
 			return [
-				'message' => $option_data['same_file_interval_text'],
+				'message' => $this->settings_manager->get_same_file_interval_text(),
 			];
 		} else {
-			set_transient($same_file_download_transient_name, true, $option_data['same_file_interval']);
+			set_transient($same_file_download_transient_name, true, $this->settings_manager->get_same_file_interval());
 		}
 
 		if (!isset($download_option_id)) {
-			$recent_download_transient_name = 'user_' . get_current_user_id() . '_recent_download';
+			$recent_download_transient_name = 'user_' . $user_id . '_recent_download';
 			$recent_download_transient_value = get_transient($recent_download_transient_name);
 
 			if ($recent_download_transient_value) {
 				return [
-					'message' => $option_data['download_interval_text'],
+					'message' => $this->settings_manager->get_same_file_interval_text(),
 				];
 			} else {
-				set_transient($recent_download_transient_name, true, $option_data['download_interval']);
+				set_transient($recent_download_transient_name, true, $this->settings_manager->get_same_file_interval());
 			}
 		}
 
-		$user_daily_credits = apply_filters('super_downloads_api_user_daily_credits', (string) $option_data['rate_limiter_group'][0]['daily_limit']);
 		$request_cost = apply_filters('super_downloads_api_download_credit_cost', (string) $credits_spent_per_download);
 		$user_tracking_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
@@ -187,7 +154,6 @@ class Fntwork_Super_Downloads_API_Manager
 				'url' => (string) $product_page_url,
 				'optionId' => (string) $download_option_id
 			],
-			'key' => (string) $this->get_api_key(),
 			'userTracking' => [
 				'id' => (string) $user_tracking_id,
 				'ip' => (string) $_SERVER['REMOTE_ADDR'],
@@ -195,8 +161,8 @@ class Fntwork_Super_Downloads_API_Manager
 				'browserUserAgent' => (string) $_SERVER['HTTP_USER_AGENT'],
 			],
 			'rateLimiter' => [
-				'userDailyCredits' => (string) $user_daily_credits,
-				'requestCost' => (string) $request_cost
+				'userDailyCredits' => (string) $this->settings_manager->get_daily_download_limit(),
+				'requestCost' => (string) $request_cost,
 			]
 		]);
 
@@ -207,6 +173,7 @@ class Fntwork_Super_Downloads_API_Manager
 			'headers'     => [
 				"Content-Type" => "application/json",
 				"x-plugin-version" => $this->version,
+				"x-api-key" => (string) $this->settings_manager->get_api_key(),
 			],
 			'body'        => $api_body
 		]);
