@@ -110,7 +110,13 @@ class Fntwork_Super_Downloads_API_Manager
 			}
 		}
 
-		$user_has_download_access = apply_filters('super_downloads_api_filter_user_access', $user_has_download_access);
+		$user_has_download_access = apply_filters(
+			'super_downloads_api_filter_user_access',
+			$user_has_download_access,
+			$found_provider_id,
+			$product_page_url,
+			$download_option_id
+		);
 
 		if (!$user_has_download_access) {
 			return [
