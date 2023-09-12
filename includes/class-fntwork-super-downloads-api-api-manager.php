@@ -56,23 +56,23 @@ class Fntwork_Super_Downloads_API_Manager
 		$user_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
 		$providers = $this->get_providers();
-		$provider_nickname = null;
+		$found_provider_id = null;
 
 		foreach ($providers as $provider) {
 			foreach ($provider['attributes']['patterns'] as $pattern) {
 				$regex = $pattern['regex'];
 				if (preg_match('/' . $regex . '/', $product_page_url)) {
-					$provider_nickname = $provider['attributes']['nickname'];
+					$found_provider_id = $provider['attributes']['provider_id'];
 					break;
 				}
 			}
 
-			if ($provider_nickname != null) {
+			if ($found_provider_id != null) {
 				break;
 			}
 		}
 
-		if ($provider_nickname == null) {
+		if ($found_provider_id == null) {
 			return [
 				'message' => $this->settings_manager->get_unsupported_service_text(),
 			];
@@ -93,7 +93,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 			foreach ($user_permissions as $permission) {
 				foreach ($permission as $permission_info) {
-					if ($permission_info['provider_nickname'] == $provider_nickname) {
+					if ($permission_info['provider_id'] === $found_provider_id) {
 						foreach ($user_roles as $user_role) {
 							if (in_array($user_role, $permission_info['role_name'])) {
 								$user_has_access = true;

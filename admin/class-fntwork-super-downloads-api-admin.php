@@ -220,7 +220,7 @@ class Fntwork_Super_Downloads_Api_Admin
 		foreach ($providers as $provider) {
 			$provider_id = $provider['attributes']['provider_id'];
 			$provider_nickname = $provider['attributes']['nickname'];
-			$provider_description = 'Manage Access for Provider: ' . $provider_nickname;
+			$provider_description = "Manage Access for Provider: {$provider_nickname}";
 
 			$group_field_id = $cmb->add_field(array(
 				'id'          => "{$provider_id}_provider_options",
@@ -266,12 +266,11 @@ class Fntwork_Super_Downloads_Api_Admin
 				'default' => ['administrator']
 			));
 
-			// add provider nickname to the options
 			$cmb->add_group_field($group_field_id, array(
-				'name'    => 'Provider Nickname',
-				'id'      => 'provider_nickname',
+				'name'    => 'Provider ID',
+				'id'      => 'provider_id',
 				'type'    => 'hidden',
-				'default' => $provider_nickname
+				'default' => $provider_id,
 			));
 		}
 	}
