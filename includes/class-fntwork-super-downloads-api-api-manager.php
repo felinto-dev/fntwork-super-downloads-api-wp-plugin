@@ -101,7 +101,7 @@ class Fntwork_Super_Downloads_API_Manager
 			$provider_settings = $this->settings_manager->get_provider_settings_by_id($found_provider_id);
 
 			foreach ($user_roles as $user_role) {
-				if (in_array($user_role, $provider_settings['role_name'])) {
+				if (in_array($user_role, $provider_settings['role_access_list'])) {
 					$user_has_download_access = true;
 					$credit_cost_per_download = $provider_settings['credit_cost_per_download'];
 				}

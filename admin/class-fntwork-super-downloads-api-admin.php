@@ -259,7 +259,7 @@ class Fntwork_Super_Downloads_Api_Admin
 
 			$cmb->add_group_field($group_field_id, array(
 				'name'    => 'Role Name',
-				'id'      => 'role_name',
+				'id'      => 'role_access_list',
 				'options' => $role_options,
 				'type'    => 'multicheck_inline',
 				'select_all_button' => false,

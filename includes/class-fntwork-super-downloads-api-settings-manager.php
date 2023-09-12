@@ -39,7 +39,7 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		foreach ($option_data as $key => $value) {
 			if (
 				is_array($value)
-				&& isset($value[0]['role_name'])
+				&& isset($value[0]['role_access_list'])
 				&& isset($value[0]['provider_id'])
 			) {
 				$filtered_option_data[$key] = $value;
@@ -57,7 +57,7 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 			if ($provider_settings[0]['provider_id'] === $provider_id) {
 				return [
 					'credits_spent_per_download' => $provider_settings[0]['credits_spent_per_download'],
-					'role_name' => $provider_settings[0]['role_name'],
+					'role_access_list' => $provider_settings[0]['role_access_list'],
 				];
 			}
 		}
