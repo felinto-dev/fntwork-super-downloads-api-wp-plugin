@@ -132,7 +132,7 @@ class Fntwork_Super_Downloads_API_Manager
 		do_action('super_downloads_api_after_check_same_file');
 
 		if (!isset($download_option_id)) {
-			$recent_download_transient_name = 'user_' . $user_id . '_recent_download';
+			$recent_download_transient_name = "user_{$user_id}_recent_download";
 			$recent_download_transient_value = get_transient($recent_download_transient_name);
 
 			if ($recent_download_transient_value) {
