@@ -93,8 +93,9 @@ class Fntwork_Super_Downloads_API_Manager
 		$user_has_download_access = false;
 
 		if (!$provider_settings) {
-			// If there are no permissions defined, grant access to the user
-			$user_has_download_access = true;
+			return [
+				'message' => $this->settings_manager->get_permission_denied_text(),
+			];
 		} else {
 			$user_roles = wp_get_current_user()->roles;
 			$provider_settings = $this->settings_manager->get_provider_settings_by_id($found_provider_id);
