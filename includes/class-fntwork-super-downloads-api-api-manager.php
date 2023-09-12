@@ -51,10 +51,8 @@ class Fntwork_Super_Downloads_API_Manager
 		}
 	}
 
-	public function generate_provider_download_url($product_page_url, $browser_fingerprint, $download_option_id)
+	public function find_provider_id_by_product_page_url($product_page_url)
 	{
-		$user_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
-
 		$providers = $this->get_providers();
 		$found_provider_id = null;
 
@@ -71,6 +69,14 @@ class Fntwork_Super_Downloads_API_Manager
 				break;
 			}
 		}
+
+		return $found_provider_id;
+	}
+
+	public function generate_provider_download_url($product_page_url, $browser_fingerprint, $download_option_id)
+	{
+		$user_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
+		$found_provider_id = $this->find_provider_id_by_product_page_url($product_page_url);
 
 		if (!$found_provider_id) {
 			return [
