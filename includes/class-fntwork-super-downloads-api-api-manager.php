@@ -67,12 +67,12 @@ class Fntwork_Super_Downloads_API_Manager
 				}
 			}
 
-			if ($found_provider_id != null) {
+			if ($found_provider_id) {
 				break;
 			}
 		}
 
-		if ($found_provider_id == null) {
+		if (!$found_provider_id) {
 			return [
 				'message' => $this->settings_manager->get_unsupported_service_text(),
 			];
