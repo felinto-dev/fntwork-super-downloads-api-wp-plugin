@@ -86,7 +86,7 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		$credit_cost_per_download = apply_filters('super_downloads_api_credit_cost_per_download_default', 1);
+		$credits_spent_per_download = apply_filters('super_downloads_api_credits_spent_per_download_default', 1);
 
 		$provider_settings = $this->settings_manager->get_providers_settings();
 
@@ -96,15 +96,17 @@ class Fntwork_Super_Downloads_API_Manager
 			return [
 				'message' => $this->settings_manager->get_permission_denied_text(),
 			];
-		} else {
-			$user_roles = wp_get_current_user()->roles;
-			$provider_settings = $this->settings_manager->get_provider_settings_by_id($found_provider_id);
+		}
 
-			foreach ($user_roles as $user_role) {
-				if (in_array($user_role, $provider_settings['role_access_list'])) {
-					$user_has_download_access = true;
-					$credit_cost_per_download = $provider_settings['credit_cost_per_download'];
-				}
+
+		$user_roles = wp_get_current_user()->roles;
+		$provider_settings = $this->settings_manager->get_provider_settings_by_id($found_provider_id);
+		$credits_spent_per_download = $provider_settings['credits_spent_per_download'] ?? $credits_spent_per_download;
+
+		foreach ($user_roles as $user_role) {
+			if (in_array($user_role, $provider_settings['role_access_list'])) {
+				$user_has_download_access = true;
+				break;
 			}
 		}
 
@@ -146,7 +148,7 @@ class Fntwork_Super_Downloads_API_Manager
 
 		do_action('super_downloads_api_after_check_recent_download');
 
-		$request_cost = apply_filters('super_downloads_api_request_cost', (string) $credit_cost_per_download);
+		$request_cost = apply_filters('super_downloads_api_request_cost', (string) $credits_spent_per_download);
 		$user_tracking_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
 		$api_request_body = apply_filters('super_downloads_api_request_body', [
