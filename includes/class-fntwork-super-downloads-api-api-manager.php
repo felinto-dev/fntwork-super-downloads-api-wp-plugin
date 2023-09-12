@@ -8,20 +8,17 @@ class Fntwork_Super_Downloads_API_Manager
 	private $plugin_name;
 	private $version;
 	private $settings_manager;
-	private $guard;
 
 	public function __construct(
 		string $plugin_name,
 		string $version,
 		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager,
-		Fntwork_Super_Downloads_Api_Guard $guard,
 	) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->strapi_api_url = 'https://strapi.fnt.work/api';
 		$this->n8n_api_url = 'https://n8n.fnt.work/webhook/super-downloads-api';
 		$this->settings_manager = $settings_manager;
-		$this->guard = $guard;
 	}
 
 	public function get_providers()
