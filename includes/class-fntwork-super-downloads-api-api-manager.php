@@ -97,19 +97,12 @@ class Fntwork_Super_Downloads_API_Manager
 			$user = wp_get_current_user();
 			$user_roles = $user->roles;
 
-			foreach ($provider_settings as $provider_setting) {
-				if ($provider_setting[0]['provider_id'] === $found_provider_id) {
-					foreach ($user_roles as $user_role) {
-						if (in_array($user_role, $provider_setting[0]['role_name'])) {
-							$user_has_access = true;
-							$credits_spent_per_download = $provider_setting[0]['credits_spent_per_download'];
-							break;
-						}
-					}
-				}
+			$provider_settings = $this->settings_manager->get_provider_settings($found_provider_id);
 
-				if ($user_has_access) {
-					break;
+			foreach ($user_roles as $user_role) {
+				if (in_array($user_role, $provider_settings['role_name'])) {
+					$user_has_access = true;
+					$credits_spent_per_download = $provider_settings['credits_spent_per_download'];
 				}
 			}
 		}

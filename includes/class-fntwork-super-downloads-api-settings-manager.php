@@ -49,6 +49,22 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		return $filtered_option_data;
 	}
 
+	public function get_provider_settings($provider_id)
+	{
+		$providers_settings = $this->get_providers_settings();
+
+		foreach ($providers_settings as $provider_settings) {
+			if ($provider_settings[0]['provider_id'] === $provider_id) {
+				return [
+					'credits_spent_per_download' => $provider_settings[0]['credits_spent_per_download'],
+					'role_name' => $provider_settings[0]['role_name'],
+				];
+			}
+		}
+
+		return null;
+	}
+
 	public function get_daily_download_limit()
 	{
 		$daily_download_limit = $this->get_option_data()['rate_limiter_group'][0]['daily_limit'];
