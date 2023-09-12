@@ -74,7 +74,7 @@ class Fntwork_Super_Downloads_Api
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'fntwork-super-downloads-api';
+		$this->plugin_name = FNTWORK_SUPER_DOWNLOAD_API_PLUGIN_NAME;
 
 		$this->load_dependencies();
 		$this->set_locale();

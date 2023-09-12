@@ -36,6 +36,8 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
+define('FNTWORK_SUPER_DOWNLOAD_API_PLUGIN_NAME', 'fntwork-super-downloads-api');
+
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
@@ -88,14 +90,30 @@ function run_fntwork_super_downloads_api()
 	$plugin->run();
 }
 
-function fntwork_super_downloads_api_get_providers()
+function fntwork_super_downloads_api_get_providers_from_api()
 {
-	if (!class_exists('Fntwork_Super_Downloads_API_Manager')) {
-		return [];
-	}
+	$settings_manager = new Fntwork_Super_Downloads_Api_Settings_Manager(
+		FNTWORK_SUPER_DOWNLOAD_API_PLUGIN_NAME,
+		FNTWORK_SUPER_DOWNLOADS_API_VERSION
+	);
 
-	$api_manager = new Fntwork_Super_Downloads_API_Manager('fntwork-super-downloads-api', FNTWORK_SUPER_DOWNLOADS_API_VERSION);
-	return $api_manager->get_providers();
+	$api_manager = new Fntwork_Super_Downloads_API_Manager(
+		FNTWORK_SUPER_DOWNLOAD_API_PLUGIN_NAME,
+		FNTWORK_SUPER_DOWNLOADS_API_VERSION,
+		$settings_manager,
+	);
+
+	return $api_manager->get_providers() ?? [];
+}
+
+function fntwork_super_downloads_api_get_providers_from_settings()
+{
+	$settings_manager = new Fntwork_Super_Downloads_Api_Settings_Manager(
+		FNTWORK_SUPER_DOWNLOAD_API_PLUGIN_NAME,
+		FNTWORK_SUPER_DOWNLOADS_API_VERSION
+	);
+
+	return $settings_manager->get_providers_settings() ?? [];
 }
 
 run_fntwork_super_downloads_api();

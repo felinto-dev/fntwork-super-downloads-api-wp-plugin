@@ -272,6 +272,13 @@ class Fntwork_Super_Downloads_Api_Admin
 				'type'    => 'hidden',
 				'default' => $provider_id,
 			));
+
+			$cmb->add_group_field($group_field_id, array(
+				'name'    => 'Provider Nickname',
+				'id'      => 'provider_nickname',
+				'type'    => 'hidden',
+				'default' => $provider_nickname,
+			));
 		}
 	}
 
