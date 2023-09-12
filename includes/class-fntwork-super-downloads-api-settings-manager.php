@@ -49,7 +49,7 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		return $filtered_option_data;
 	}
 
-	public function get_provider_settings($provider_id)
+	public function get_provider_settings_by_id($provider_id)
 	{
 		$providers_settings = $this->get_providers_settings();
 

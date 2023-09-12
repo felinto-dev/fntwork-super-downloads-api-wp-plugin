@@ -75,7 +75,9 @@ class Fntwork_Super_Downloads_API_Manager
 
 	public function generate_provider_download_url($product_page_url, $browser_fingerprint, $download_option_id)
 	{
-		$user_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
+		do_action('super_downloads_api_before_generate_download_url', $product_page_url, $download_option_id);
+
+		$user_id = get_current_user_id();
 		$found_provider_id = $this->find_provider_id_by_product_page_url($product_page_url);
 
 		if (!$found_provider_id) {
@@ -84,36 +86,36 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		$credits_spent_per_download = 1;
+		$credit_cost_per_download = apply_filters('super_downloads_api_credit_cost_per_download_default', 1);
 
 		$provider_settings = $this->settings_manager->get_providers_settings();
 
-		$user_has_access = false;
+		$user_has_download_access = false;
 
 		if (!$provider_settings) {
 			// If there are no permissions defined, grant access to the user
-			$user_has_access = true;
+			$user_has_download_access = true;
 		} else {
-			$user = wp_get_current_user();
-			$user_roles = $user->roles;
-
-			$provider_settings = $this->settings_manager->get_provider_settings($found_provider_id);
+			$user_roles = wp_get_current_user()->roles;
+			$provider_settings = $this->settings_manager->get_provider_settings_by_id($found_provider_id);
 
 			foreach ($user_roles as $user_role) {
 				if (in_array($user_role, $provider_settings['role_name'])) {
-					$user_has_access = true;
-					$credits_spent_per_download = $provider_settings['credits_spent_per_download'];
+					$user_has_download_access = true;
+					$credit_cost_per_download = $provider_settings['credit_cost_per_download'];
 				}
 			}
 		}
 
-		$user_has_access = apply_filters('super_downloads_api_allow_user_access', $user_has_access);
+		$user_has_download_access = apply_filters('super_downloads_api_filter_user_access', $user_has_download_access);
 
-		if (!$user_has_access) {
+		if (!$user_has_download_access) {
 			return [
 				'message' => $this->settings_manager->get_permission_denied_text(),
 			];
 		}
+
+		do_action('super_downloads_api_after_user_access_check', $user_has_download_access);
 
 		$download_params_hash = md5("{$product_page_url} // {$download_option_id}");
 		$same_file_download_transient_name = "user_{$user_id}_url_{$download_params_hash}";
@@ -125,6 +127,8 @@ class Fntwork_Super_Downloads_API_Manager
 		} else {
 			set_transient($same_file_download_transient_name, true, $this->settings_manager->get_same_file_interval());
 		}
+
+		do_action('super_downloads_api_after_check_same_file');
 
 		if (!isset($download_option_id)) {
 			$recent_download_transient_name = 'user_' . $user_id . '_recent_download';
@@ -139,10 +143,12 @@ class Fntwork_Super_Downloads_API_Manager
 			}
 		}
 
-		$request_cost = apply_filters('super_downloads_api_download_credit_cost', (string) $credits_spent_per_download);
+		do_action('super_downloads_api_after_check_recent_download');
+
+		$request_cost = apply_filters('super_downloads_api_request_cost', (string) $credit_cost_per_download);
 		$user_tracking_id = apply_filters('super_downloads_api_user_tracking_id', (string) get_current_user_id());
 
-		$api_body = json_encode([
+		$api_request_body = apply_filters('super_downloads_api_request_body', [
 			'downloadParams' => [
 				'url' => (string) $product_page_url,
 				'optionId' => (string) $download_option_id
@@ -159,6 +165,7 @@ class Fntwork_Super_Downloads_API_Manager
 			]
 		]);
 
+		$api_body = json_encode($api_request_body);
 		$api_endpoint = "{$this->n8n_api_url}/download";
 		$api_response = wp_remote_request($api_endpoint, [
 			'method'      => 'POST',
@@ -170,8 +177,12 @@ class Fntwork_Super_Downloads_API_Manager
 			],
 			'body'        => $api_body
 		]);
+		do_action('super_downloads_api_before_remote_request', $api_endpoint, $api_body);
+
 		$response_body = wp_remote_retrieve_body($api_response);
 		$response_data = json_decode($response_body, true);
-		return $response_data;
+		do_action('super_downloads_api_after_remote_request', $api_endpoint, $api_body, $response_data);
+
+		return apply_filters('super_downloads_api_generate_provider_download_url_response', $response_data);
 	}
 }
