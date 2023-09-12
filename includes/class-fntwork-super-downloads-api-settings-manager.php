@@ -27,7 +27,7 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		return $this->get_option_data()['api_key'];
 	}
 
-	public function get_user_role_by_provider_access_permissions()
+	public function get_providers_settings()
 	{
 		$option_data = $this->get_option_data();
 
@@ -37,7 +37,11 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		 * Filter out any options that don't have a role_name and provider_nickname
 		 */
 		foreach ($option_data as $key => $value) {
-			if (is_array($value) && isset($value[0]['role_name']) && isset($value[0]['provider_nickname'])) {
+			if (
+				is_array($value)
+				&& isset($value[0]['role_name'])
+				&& isset($value[0]['provider_id'])
+			) {
 				$filtered_option_data[$key] = $value;
 			}
 		}
