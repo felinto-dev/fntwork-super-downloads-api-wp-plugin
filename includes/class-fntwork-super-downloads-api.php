@@ -117,6 +117,8 @@ class Fntwork_Super_Downloads_Api
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fntwork-super-downloads-api-settings-manager.php';
 
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fntwork-super-downloads-api-guard.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -158,10 +160,12 @@ class Fntwork_Super_Downloads_Api
 	private function define_admin_hooks()
 	{
 		$settings_manager = new Fntwork_Super_Downloads_Api_Settings_Manager($this->get_plugin_name(), $this->get_version());
+		$guard = new Fntwork_Super_Downloads_Api_Guard($this->get_plugin_name(), $this->get_version(), $settings_manager);
 		$api_manager = new Fntwork_Super_Downloads_API_Manager(
 			$this->get_plugin_name(),
 			$this->get_version(),
 			$settings_manager,
+			$guard,
 		);
 		$plugin_admin = new Fntwork_Super_Downloads_Api_Admin(
 			$this->get_plugin_name(),
@@ -186,7 +190,8 @@ class Fntwork_Super_Downloads_Api
 	private function define_public_hooks()
 	{
 		$settings_manager = new Fntwork_Super_Downloads_Api_Settings_Manager($this->get_plugin_name(), $this->get_version());
-		$api_manager = new Fntwork_Super_Downloads_API_Manager($this->get_plugin_name(), $this->get_version(), $settings_manager);
+		$guard = new Fntwork_Super_Downloads_Api_Guard($this->get_plugin_name(), $this->get_version(), $settings_manager);
+		$api_manager = new Fntwork_Super_Downloads_API_Manager($this->get_plugin_name(), $this->get_version(), $settings_manager, $guard);
 		$plugin_public = new Fntwork_Super_Downloads_Api_Public($this->get_plugin_name(), $this->get_version(), $api_manager);
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');

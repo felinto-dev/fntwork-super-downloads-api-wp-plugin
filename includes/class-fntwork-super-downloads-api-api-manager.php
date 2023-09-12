@@ -8,17 +8,20 @@ class Fntwork_Super_Downloads_API_Manager
 	private $plugin_name;
 	private $version;
 	private $settings_manager;
+	private $guard;
 
 	public function __construct(
 		string $plugin_name,
 		string $version,
-		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager
+		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager,
+		Fntwork_Super_Downloads_Api_Guard $guard,
 	) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->strapi_api_url = 'https://strapi.fnt.work/api';
 		$this->n8n_api_url = 'https://n8n.fnt.work/webhook/super-downloads-api';
 		$this->settings_manager = $settings_manager;
+		$this->guard = $guard;
 	}
 
 	public function get_providers()
@@ -115,9 +118,9 @@ class Fntwork_Super_Downloads_API_Manager
 			];
 		}
 
-		$same_file_download_transient_name = 'user_' . $user_id . '_url_' . md5($product_page_url . $download_option_id);
+		$download_params_hash = md5("{$product_page_url} // {$download_option_id}");
+		$same_file_download_transient_name = "user_{$user_id}_url_{$download_params_hash}";
 		$same_file_download_transient_value = get_transient($same_file_download_transient_name);
-
 		if ($same_file_download_transient_value) {
 			return [
 				'message' => $this->settings_manager->get_same_file_interval_text(),
