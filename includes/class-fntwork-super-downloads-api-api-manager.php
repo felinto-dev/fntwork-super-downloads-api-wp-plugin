@@ -145,10 +145,10 @@ class Fntwork_Super_Downloads_API_Manager
 
 			if ($recent_download_transient_value) {
 				return [
-					'message' => $this->settings_manager->get_same_file_interval_text(),
+					'message' => $this->settings_manager->get_download_interval_text(),
 				];
 			} else {
-				set_transient($recent_download_transient_name, true, $this->settings_manager->get_same_file_interval());
+				set_transient($recent_download_transient_name, true, $this->settings_manager->get_download_interval());
 			}
 		}
 
