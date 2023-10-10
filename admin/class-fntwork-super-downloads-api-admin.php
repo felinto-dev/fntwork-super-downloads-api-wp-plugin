@@ -58,7 +58,6 @@ class Fntwork_Super_Downloads_Api_Admin
 		Fntwork_Super_Downloads_API_Manager $api_manager,
 		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager
 	) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->api_manager = $api_manager;
