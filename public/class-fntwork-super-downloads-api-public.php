@@ -144,7 +144,10 @@ class Fntwork_Super_Downloads_Api_Public
 			'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js',
 			[],
 			null,
-			true
+			[
+				'strategy' => 'async',
+				'in_footer' => true,
+			],
 		);
 
 		wp_register_script(
@@ -152,7 +155,10 @@ class Fntwork_Super_Downloads_Api_Public
 			plugin_dir_url(__FILE__) . 'js/fntwork-super-downloads-api-public.js',
 			[$this->plugin_name . '-confetti-lib'],
 			$this->version,
-			true
+			[
+				'strategy' => 'async',
+				'in_footer' => true,
+			],
 		);
 
 		wp_localize_script($this->plugin_name, 'fntwork_ajax_object', array(
