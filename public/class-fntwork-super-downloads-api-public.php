@@ -57,7 +57,6 @@ class Fntwork_Super_Downloads_Api_Public
 		$this->version = $version;
 		$this->api_manager = $api_manager;
 
-		do_action('super-downloads-api-shortcode');
 		add_shortcode('super-downloads-api', array($this, 'super_downloads_api_shortcode'));
 		add_action('wp_ajax_process_download_form', array($this, 'process_download_form'));
 		add_action('wp_ajax_nopriv_process_download_form', array($this, 'process_download_form'));
@@ -68,8 +67,10 @@ class Fntwork_Super_Downloads_Api_Public
 		wp_enqueue_script($this->plugin_name);
 		wp_enqueue_script($this->plugin_name . '-confetti-lib');
 
+		do_action('before_super_downloads_api_shortcode');
 		ob_start();
 		include(plugin_dir_path(__FILE__) . 'partials/fntwork-super-downloads-api-public-display.php');
+		do_action('after_super_downloads_api_shortcode');
 		return ob_get_clean();
 	}
 
