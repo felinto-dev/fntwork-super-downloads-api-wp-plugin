@@ -83,7 +83,7 @@ class Fntwork_Super_Downloads_Api_Public
 		);
 
 		if (!$response_data || !isset($response_data['code'])) {
-			wp_send_json_error([
+			return wp_send_json_error([
 				'message' =>  isset($response_data['message'])
 					? $response_data['message']
 					: 'Um erro inesperado ocorreu. Por favor, entre em contato com o suporte.',
@@ -91,11 +91,9 @@ class Fntwork_Super_Downloads_Api_Public
 					'api_response' => $response_data,
 				],
 			]);
-		} else {
-			wp_send_json_success($response_data);
 		}
 
-		wp_die();
+		return wp_send_json_success($response_data);
 	}
 
 	/**
