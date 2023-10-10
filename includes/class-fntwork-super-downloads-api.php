@@ -194,7 +194,6 @@ class Fntwork_Super_Downloads_Api
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		$this->loader->add_action('wp_ajax_process_download_form', $plugin_public, 'process_download_form');
-		$this->loader->add_action('wp_ajax_nopriv_process_download_form', $plugin_public, 'process_download_form');
 	}
 
 	/**
