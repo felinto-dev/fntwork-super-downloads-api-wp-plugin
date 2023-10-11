@@ -179,7 +179,6 @@ class Fntwork_Super_Downloads_Api
 
 		$this->loader->add_filter('manage_users_columns', $rate_limiter, 'add_user_credits_left_table_list_column');
 		$this->loader->add_filter('manage_users_custom_column', $rate_limiter, 'populate_user_credits_left_table_list_column', 10, 3);
-		$this->loader->add_filter('manage_users_sortable_columns', $rate_limiter, 'sortable_user_credits_left_table_list_column');
 
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
