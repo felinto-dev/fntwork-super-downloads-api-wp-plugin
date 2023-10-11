@@ -156,7 +156,7 @@ class Fntwork_Super_Downloads_Api_Public
 			[$this->plugin_name . '-confetti-lib'],
 			$this->version,
 			[
-				'strategy' => 'async',
+				'strategy' => 'defer',
 				'in_footer' => true,
 			],
 		);
