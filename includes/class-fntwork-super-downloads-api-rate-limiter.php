@@ -36,7 +36,7 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 			return $this->settings_manager->get_daily_download_limit();
 		}
 
-		return $transient_value;
+		return (int) $transient_value;
 	}
 
 	public function set_credits_left(Int $user_id = 0, Int $credits_left)
@@ -52,7 +52,7 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		if ($transient_expires_time >= 1 && $transient_expires_time <= 86400) {
 			set_transient(
 				$this->get_transient_key($user_id),
-				$credits_left,
+				(int) $credits_left,
 				$transient_expires_time
 			);
 		}
@@ -71,11 +71,5 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		}
 
 		return $value;
-	}
-
-	public function sortable_user_credits_left_table_list_column($columns)
-	{
-		$columns[$this->key] = $this->column_name;
-		return $columns;
 	}
 }
