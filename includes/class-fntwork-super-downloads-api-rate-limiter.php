@@ -39,8 +39,12 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		return $transient_value;
 	}
 
-	public function set_credits_left(Int $user_id, Int $credits_left)
+	public function set_credits_left(Int $user_id = 0, Int $credits_left)
 	{
+		if (!$user_id) {
+			$user_id = get_current_user_id();
+		}
+
 		$current_time = current_time('timestamp');
 		$midnight = strtotime('tomorrow midnight', $current_time);
 		$transient_expires_time = $midnight - $current_time;
@@ -51,6 +55,19 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 				$credits_left,
 				$transient_expires_time
 			);
+		}
+	}
+
+	public function on_new_download($api_endpoint, $api_body, $response_data)
+	{
+		if (isset($response_data) and isset($response_data['code'])) {
+			$user_id = get_current_user_id();
+
+			if ($response_data['code'] === '1002' or $response_data['code'] === '1002.1') {
+				$this->set_credits_left($user_id, $response_data['rateLimiterUserCreditsLeft']);
+			} else if ($response_data['code'] === '1100') {
+				$this->set_credits_left($user_id, 0);
+			}
 		}
 	}
 

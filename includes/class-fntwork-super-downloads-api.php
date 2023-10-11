@@ -199,12 +199,14 @@ class Fntwork_Super_Downloads_Api
 		$settings_manager = new Fntwork_Super_Downloads_Api_Settings_Manager($this->get_plugin_name(), $this->get_version());
 		$api_manager = new Fntwork_Super_Downloads_API_Manager($this->get_plugin_name(), $this->get_version(), $settings_manager);
 		$plugin_public = new Fntwork_Super_Downloads_Api_Public($this->get_plugin_name(), $this->get_version(), $api_manager);
+		$rate_limiter = new Fntwork_Super_Downloads_Api_Rate_Limiter($this->get_plugin_name(), $this->get_version(), $settings_manager);
 
 		add_shortcode('super-downloads-api', [$plugin_public, 'super_downloads_api_shortcode']);
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		$this->loader->add_action('wp_ajax_process_download_form', $plugin_public, 'process_download_form');
+		$this->loader->add_action('super_downloads_api_after_api_request', $rate_limiter, 'on_new_download', 10, 3);
 	}
 
 	/**

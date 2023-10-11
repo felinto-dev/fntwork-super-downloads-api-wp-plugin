@@ -186,11 +186,11 @@ class Fntwork_Super_Downloads_API_Manager
 			],
 			'body'        => $api_body
 		]);
-		do_action('super_downloads_api_before_remote_request', $api_endpoint, $api_body);
+		do_action('super_downloads_api_before_api_request', $api_endpoint, $api_body);
 
 		$response_body = wp_remote_retrieve_body($api_response);
 		$response_data = json_decode($response_body, true);
-		do_action('super_downloads_api_after_remote_request', $api_endpoint, $api_body, $response_data);
+		do_action('super_downloads_api_after_api_request', $api_endpoint, $api_body, $response_data);
 
 		return apply_filters('super_downloads_api_generate_provider_download_url_response', $response_data);
 	}
