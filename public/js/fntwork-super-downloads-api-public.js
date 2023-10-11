@@ -138,11 +138,14 @@ const startDownload = () => {
 				simulateProgress.stop();
 				window.location.href = response.data.downloadUrl;
 
-				if (response.data.code === '1002' || response.data.code === '1002.1') {
-					getUserCreditsLeft().innerText = +response.data.rateLimiterUserCreditsLeft;
-				} else if (response.data.code === '1100') {
-					getUserCreditsLeft().innerText = 0;
+				if (getUserCreditsLeft()) {
+					if (response.data.code === '1002' || response.data.code === '1002.1') {
+						getUserCreditsLeft().innerText = +response.data.rateLimiterUserCreditsLeft;
+					} else if (response.data.code === '1100') {
+						getUserCreditsLeft().innerText = 0;
+					}
 				}
+
 				resetForm({ cleanUrlInput: true, cleanDownloadOptionId: true });
 			} else if (response.data.code === '1007') {
 				getExtraDownloadOptions().style.display = 'flex';
