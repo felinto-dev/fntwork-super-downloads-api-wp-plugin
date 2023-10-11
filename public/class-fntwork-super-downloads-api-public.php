@@ -43,6 +43,8 @@ class Fntwork_Super_Downloads_Api_Public
 
 	private $api_manager;
 
+	private $rate_limiter;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -50,11 +52,12 @@ class Fntwork_Super_Downloads_Api_Public
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version, $api_manager)
+	public function __construct($plugin_name, $version, Fntwork_Super_Downloads_API_Manager $api_manager, Fntwork_Super_Downloads_Api_Rate_Limiter $rate_limiter)
 	{
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->api_manager = $api_manager;
+		$this->rate_limiter = $rate_limiter;
 	}
 
 	public function super_downloads_api_shortcode()
@@ -67,6 +70,19 @@ class Fntwork_Super_Downloads_Api_Public
 		include(plugin_dir_path(__FILE__) . 'partials/fntwork-super-downloads-api-public-display.php');
 		do_action('after_super_downloads_api_shortcode');
 		return ob_get_clean();
+	}
+
+	public function on_new_download($api_endpoint, $api_body, $response_data)
+	{
+		if (isset($response_data) and isset($response_data['code'])) {
+			$user_id = get_current_user_id();
+
+			if ($response_data['code'] === '1002' or $response_data['code'] === '1002.1') {
+				$this->rate_limiter->set_credits_left($user_id, $response_data['rateLimiterUserCreditsLeft']);
+			} else if ($response_data['code'] === '1100') {
+				$this->rate_limiter->set_credits_left($user_id, 0);
+			}
+		}
 	}
 
 	public function process_download_form()

@@ -58,19 +58,6 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		}
 	}
 
-	public function on_new_download($api_endpoint, $api_body, $response_data)
-	{
-		if (isset($response_data) and isset($response_data['code'])) {
-			$user_id = get_current_user_id();
-
-			if ($response_data['code'] === '1002' or $response_data['code'] === '1002.1') {
-				$this->set_credits_left($user_id, $response_data['rateLimiterUserCreditsLeft']);
-			} else if ($response_data['code'] === '1100') {
-				$this->set_credits_left($user_id, 0);
-			}
-		}
-	}
-
 	public function add_user_credits_left_table_list_column($column)
 	{
 		$column[$this->key] = $this->column_name;
