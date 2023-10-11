@@ -25,6 +25,7 @@
  * Domain Path:       /languages
  * GitHub Plugin URI: felinto-dev/fntwork-super-downloads-api-wp-plugin
  * Primary Branch: main
+ * Requires PHP: 8.2
  */
 
 // If this file is called directly, abort.
