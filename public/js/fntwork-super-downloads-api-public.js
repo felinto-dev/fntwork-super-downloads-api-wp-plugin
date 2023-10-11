@@ -10,6 +10,7 @@ const PROGRESS_BAR = 'progress-bar';
 const PROGRESS_TIME = 'progress-time';
 const EXTRA_DOWNLOAD_OPTIONS = 'extra-download-options';
 const DOWNLOAD_OPTIONS_LINKS = 'extra-download-options-links';
+const USER_CREDITS_LEFT_COUNTER = 'super-downloads-api-credits-left-counter';
 
 // Parâmetros para a simulação do progresso do download
 const PROGRESS_DURATION = 15 * 1000;
@@ -26,6 +27,7 @@ const getVisitorId = () => {
 
 // Funções que obtêm elementos da interface do usuário
 const getDownloadForm = () => document.getElementById(DOWNLOAD_FORM);
+const getUserCreditsLeft = () => document.getElementById(USER_CREDITS_LEFT_COUNTER);
 const getUrlInput = () => document.getElementById(URL_INPUT);
 const getErrorMsg = () => document.getElementById(ERROR_MSG);
 const getProgressBar = () => document.getElementById(PROGRESS_BAR);
@@ -135,6 +137,12 @@ const startDownload = () => {
 				});
 				simulateProgress.stop();
 				window.location.href = response.data.downloadUrl;
+
+				if (response.data.code === '1002' || response.data.code === '1002.1') {
+					getUserCreditsLeft().innerText = +response.data.rateLimiterUserCreditsLeft;
+				} else if (response.data.code === '1100') {
+					getUserCreditsLeft().innerText = 0;
+				}
 				resetForm({ cleanUrlInput: true, cleanDownloadOptionId: true });
 			} else if (response.data.code === '1007') {
 				getExtraDownloadOptions().style.display = 'flex';
