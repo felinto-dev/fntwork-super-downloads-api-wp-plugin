@@ -72,6 +72,15 @@ class Fntwork_Super_Downloads_Api_Public
 		return ob_get_clean();
 	}
 
+	public function super_downloads_api_user_credits_left_shortcode()
+	{
+		$user_credits_left = $this->rate_limiter->get_credits_left(get_current_user_id());
+
+		ob_start();
+		include(plugin_dir_path(__FILE__) . 'partials/fntwork-super-downloads-api-user-credits-left-public-display.php');
+		return ob_get_clean();
+	}
+
 	public function on_new_download($api_endpoint, $api_body, $response_data)
 	{
 		if (isset($response_data) and isset($response_data['code'])) {
