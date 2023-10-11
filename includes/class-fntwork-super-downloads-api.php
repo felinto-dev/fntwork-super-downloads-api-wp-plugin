@@ -117,6 +117,8 @@ class Fntwork_Super_Downloads_Api
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fntwork-super-downloads-api-settings-manager.php';
 
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fntwork-super-downloads-api-rate-limiter.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -169,6 +171,15 @@ class Fntwork_Super_Downloads_Api
 			$api_manager,
 			$settings_manager,
 		);
+		$rate_limiter = new Fntwork_Super_Downloads_Api_Rate_Limiter(
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$settings_manager,
+		);
+
+		$this->loader->add_filter('manage_users_columns', $rate_limiter, 'add_user_credits_left_table_list_column');
+		$this->loader->add_filter('manage_users_custom_column', $rate_limiter, 'populate_user_credits_left_table_list_column', 10, 3);
+		$this->loader->add_filter('manage_users_sortable_columns', $rate_limiter, 'sortable_user_credits_left_table_list_column');
 
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		// $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
