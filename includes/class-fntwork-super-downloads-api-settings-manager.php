@@ -71,6 +71,12 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		return apply_filters('super_downloads_api_user_daily_credits', $daily_download_limit);
 	}
 
+	public function get_daily_download_limit_text()
+	{
+		$daily_download_limit_text = $this->get_option_data()['rate_limiter_group'][0]['daily_limit_text'];
+		return apply_filters('super_downloads_api_user_reached_daily_limit_credits_text', $daily_download_limit_text);
+	}
+
 	public function get_unsupported_service_text()
 	{
 		return $this->get_option_data()['unsupported_service_text'];

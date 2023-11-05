@@ -207,6 +207,7 @@ class Fntwork_Super_Downloads_Api
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		$this->loader->add_action('wp_ajax_process_download_form', $plugin_public, 'process_download_form');
 		$this->loader->add_action('super_downloads_api_after_api_request', $plugin_public, 'on_new_download', 10, 3);
+		$this->loader->add_filter('super_downloads_api_generate_provider_download_url_response', $api_manager, 'custom_reached_daily_limit_download_message', 10);
 	}
 
 	/**

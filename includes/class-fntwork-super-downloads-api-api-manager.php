@@ -194,4 +194,14 @@ class Fntwork_Super_Downloads_API_Manager
 
 		return apply_filters('super_downloads_api_generate_provider_download_url_response', $response_data);
 	}
+
+	public function custom_reached_daily_limit_download_message($response_data) {
+		$message = $response_data['translations']['pt_BR'] ?? null;
+
+		if ($message) {
+			$response_data['translations']['pt_BR'] = $this->settings_manager->get_daily_download_limit_text();
+		}
+
+		return $response_data;
+	}
 }
