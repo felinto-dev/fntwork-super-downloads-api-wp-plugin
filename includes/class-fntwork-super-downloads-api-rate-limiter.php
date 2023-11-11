@@ -39,7 +39,7 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		return (int) $transient_value;
 	}
 
-	public function set_credits_left(Int $user_id = 0, Int $credits_left)
+	public function set_credits_left(Int $user_id = 0, Float $credits_left)
 	{
 		if (!$user_id) {
 			$user_id = get_current_user_id();
@@ -52,7 +52,7 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		if ($transient_expires_time >= 1 && $transient_expires_time <= 86400) {
 			set_transient(
 				$this->get_transient_key($user_id),
-				(int) $credits_left,
+				(float) $credits_left,
 				$transient_expires_time
 			);
 		}

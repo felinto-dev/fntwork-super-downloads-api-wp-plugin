@@ -247,7 +247,7 @@ class Fntwork_Super_Downloads_Api_Admin
 				'default' => 1,
 				'desc'    => 'This value represents the number of credits that are deducted from a user\'s account each time they download content from a specific provider.',
 				'sanitization_cb' => function ($value) {
-					$value = intval($value);
+					$value = floatval($value);
 					if ($value < 0) {
 						$value = 0;
 					}

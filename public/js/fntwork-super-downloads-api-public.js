@@ -140,7 +140,7 @@ const startDownload = () => {
 
 				if (getUserCreditsLeft()) {
 					if (response.data.code === '1002' || response.data.code === '1002.1') {
-						getUserCreditsLeft().innerText = +response.data.rateLimiterUserCreditsLeft;
+						getUserCreditsLeft().innerText = response.data.rateLimiterUserCreditsLeft;
 					} else if (response.data.code === '1100') {
 						getUserCreditsLeft().innerText = 0;
 					}
