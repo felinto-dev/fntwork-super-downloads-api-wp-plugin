@@ -13,7 +13,7 @@ const DOWNLOAD_OPTIONS_LINKS = 'extra-download-options-links';
 const USER_CREDITS_LEFT_COUNTER = 'super-downloads-api-credits-left-counter';
 
 // Parâmetros para a simulação do progresso do download
-const PROGRESS_DURATION = 15 * 1000;
+const PROGRESS_DURATION = 30 * 1000;
 const TIME_UPDATE_FREQUENCY = 100;
 const SHOW_TIME_AFTER = 2000;
 
