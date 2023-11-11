@@ -182,7 +182,11 @@ const startDownload = () => {
 					links.appendChild(button);
 				});
 			} else {
-				showError(response.data.message || response.data.translations.pt_BR);
+				showError(
+					response.data.message ||
+					response.data.translations.pt_BR ||
+					response.data.translations['*']
+				);
 				simulateProgress.stop();
 				resetForm({ cleanUrlInput: false, cleanDownloadOptionId: true });
 			}
