@@ -178,7 +178,7 @@ class Fntwork_Super_Downloads_API_Manager
 		$api_endpoint = "{$this->n8n_api_url}/download";
 		$api_response = wp_remote_request($api_endpoint, [
 			'method'      => 'POST',
-			'timeout'     => 60,
+			'timeout'     => 120,
 			'headers'     => [
 				"Content-Type" => "application/json",
 				"x-plugin-version" => $this->version,
