@@ -205,4 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		event.preventDefault();
 		startDownload();
 	});
+
+	// Download se inicia automaticamente quando o usuário aperta CRTL + V
+	getUrlInput().addEventListener('keydown', (event) => {
+		if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+			setTimeout(() => {
+				startDownload();
+			}, 100);
+		}
+	});
 });
