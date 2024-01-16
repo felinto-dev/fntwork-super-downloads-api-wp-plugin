@@ -164,7 +164,7 @@ class Fntwork_Super_Downloads_API_Manager
 			],
 			'userTracking' => [
 				'id' => (string) $user_tracking_id,
-				'ip' => (string) $_SERVER['REMOTE_ADDR'],
+				'ip' => (string) fntwork_get_ip_address(),
 				'browserFingerprint' => (string) $browser_fingerprint,
 				'browserUserAgent' => (string) $_SERVER['HTTP_USER_AGENT'],
 			],
