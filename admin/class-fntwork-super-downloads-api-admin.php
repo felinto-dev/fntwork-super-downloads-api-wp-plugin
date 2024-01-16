@@ -82,7 +82,7 @@ class Fntwork_Super_Downloads_Api_Admin
 	{
 		if (is_admin() AND isset($_GET['page'])) {
 			$page_value = $_GET['page'];
-			if ($page_value == 'fntwork-super-downloads-api-settings') {
+			if ($page_value == $this->settings_manager->get_option_key()) {
 				return true;
 			}
 		}
