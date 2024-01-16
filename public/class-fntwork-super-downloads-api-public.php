@@ -45,6 +45,8 @@ class Fntwork_Super_Downloads_Api_Public
 
 	private $rate_limiter;
 
+	private $settings_manager;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -52,12 +54,19 @@ class Fntwork_Super_Downloads_Api_Public
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version, Fntwork_Super_Downloads_API_Manager $api_manager, Fntwork_Super_Downloads_Api_Rate_Limiter $rate_limiter)
+	public function __construct(
+		string $plugin_name, 
+		string $version, 
+		Fntwork_Super_Downloads_API_Manager $api_manager, 
+		Fntwork_Super_Downloads_Api_Rate_Limiter $rate_limiter,
+		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager,
+		)
 	{
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->api_manager = $api_manager;
 		$this->rate_limiter = $rate_limiter;
+		$this->settings_manager = $settings_manager;
 	}
 
 	public function super_downloads_api_shortcode()
@@ -95,6 +104,12 @@ class Fntwork_Super_Downloads_Api_Public
 
 	public function process_download_form()
 	{
+		if (!is_user_logged_in()) {
+			return wp_send_json_error([
+				'message' => $this->settings_manager->get_not_logged_user_text(),
+			]);
+		}
+
 		check_ajax_referer('download_form_nonce');
 		$download_url_input = esc_url($_POST['url-input']);
 		$browser_fingerprint = $_POST['user-tracking-browser-fingerprint'];

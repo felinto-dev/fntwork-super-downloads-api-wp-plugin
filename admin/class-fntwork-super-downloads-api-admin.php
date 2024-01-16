@@ -121,6 +121,14 @@ class Fntwork_Super_Downloads_Api_Admin
 		]);
 
 		$cmb->add_field([
+			'name' => 'User is Not Logged Message',
+			'desc' => 'Message shown when user is not logged and tries to make a download',
+			'id'   => 'not_logged_user_text',
+			'type' => 'textarea_small',
+			'default' => 'Please log in to download this item. Press F5 to be prompted for login details.',
+		]);
+
+		$cmb->add_field([
 			'name' => 'Download Interval',
 			'desc' => 'Number of seconds user must wait between downloads',
 			'id'   => 'download_interval',

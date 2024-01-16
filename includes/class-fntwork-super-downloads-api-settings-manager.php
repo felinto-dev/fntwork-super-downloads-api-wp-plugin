@@ -65,6 +65,10 @@ class Fntwork_Super_Downloads_Api_Settings_Manager
 		return null;
 	}
 
+	public function get_not_logged_user_text() {
+		return $this->get_option_data()['not_logged_user_text'];
+	}
+
 	public function get_daily_download_limit()
 	{
 		$daily_download_limit = $this->get_option_data()['rate_limiter_group'][0]['daily_limit'];
