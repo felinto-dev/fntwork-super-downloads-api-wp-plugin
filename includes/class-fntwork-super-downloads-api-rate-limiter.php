@@ -39,11 +39,9 @@ class Fntwork_Super_Downloads_Api_Rate_Limiter
 		return (int) $transient_value;
 	}
 
-	public function set_credits_left(Int $user_id = 0, Float $credits_left)
+	public function set_credits_left(Float $credits_left)
 	{
-		if (!$user_id) {
-			$user_id = get_current_user_id();
-		}
+		$user_id = get_current_user_id();
 
 		$current_time = current_time('timestamp');
 		$midnight = strtotime('tomorrow midnight', $current_time);
