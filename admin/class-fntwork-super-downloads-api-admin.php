@@ -78,12 +78,26 @@ class Fntwork_Super_Downloads_Api_Admin
 		return $can_save;
 	}
 
+	public function is_options_page()
+	{
+		if (is_admin() AND isset($_GET['page'])) {
+			$page_value = $_GET['page'];
+			if ($page_value == 'fntwork-super-downloads-api-settings') {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public function super_downloads_api_options_metabox()
 	{
 		$prefix = $this->plugin_name;
 		$option_key = $this->settings_manager->get_option_key();
 
-		do_action('qm/debug', get_option($option_key));
+		if ($this->is_options_page()) {
+			do_action('qm/debug', get_option($option_key));
+		}
 
 		$cmb = new_cmb2_box([
 			'id'           => $prefix . '_options_page',
@@ -93,7 +107,9 @@ class Fntwork_Super_Downloads_Api_Admin
 			'icon_url'     => 'dashicons-download',
 		]);
 
-		do_action('qm/debug', "CMB2 Option key: {$cmb->options_page_keys()[0]}");
+		if ($this->is_options_page()) {
+			do_action('qm/debug', "CMB2 Option key: {$cmb->options_page_keys()[0]}");
+		}
 
 		$cmb->add_field([
 			'id' => 'api_key',
