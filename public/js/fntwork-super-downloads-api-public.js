@@ -103,8 +103,20 @@ const simulateProgress = (() => {
 	};
 })();
 
+const isContainsMultipleLinks = (url) => {
+  const regex = /(http(s)?:\/\/|www\.)/g;
+  const matches = url.match(regex);
+  return matches && matches.length > 1;
+}
+
 // Função que inicia o download
 const startDownload = () => {
+	if (isContainsMultipleLinks(getUrlInput().value)) {
+		alert('Por favor, verifique a URL pois detectamos a menção de mais de um link na mesma URL.');
+		resetForm({ cleanUrlInput: false, cleanDownloadOptionId: true });
+		return;
+	}
+
 	getProgressBar().style.display = 'block';
 	getErrorMsg().style.display = 'none';
 	getDownloadForm().style.display = 'none';
