@@ -32,7 +32,7 @@ class Fntwork_Super_Downloads_API_Manager
 		if ($cached_data !== false && !$should_refresh_cache) {
 			return $cached_data;
 		} else {
-			$url =  $this->strapi_api_url . '/third-party-providers';
+			$url =  $this->strapi_api_url . '/third-party-providers?pagination[pageSize]=100';
 			$response = wp_remote_get($url);
 
 			if (is_wp_error($response)) {
