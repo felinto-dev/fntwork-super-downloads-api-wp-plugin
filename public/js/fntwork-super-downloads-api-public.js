@@ -106,7 +106,7 @@ const simulateProgress = (() => {
 const isContainsMultipleLinks = (url) => {
   const regex = /(http(s)?:\/\/|www\.)/g;
   const matches = url.match(regex);
-  return matches && matches.length > 1;
+  return matches && matches.length > 2;
 }
 
 // Função que inicia o download
