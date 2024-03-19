@@ -201,7 +201,8 @@ class Fntwork_Super_Downloads_Api
 		$plugin_public = new Fntwork_Super_Downloads_Api_Public($this->get_plugin_name(), $this->get_version(), $api_manager, $rate_limiter, $settings_manager);
 
 		add_shortcode('super-downloads-api', [$plugin_public, 'super_downloads_api_shortcode']);
-		add_shortcode('super-downloads-api-user-credits-left', [$plugin_public, 'super_downloads_api_user_credits_left_shortcode']);
+		add_shortcode('super-downloads-api_provider-info', [$plugin_public, 'provider_info_shortcode']);
+		add_shortcode('super-downloads-api_user-credits-left', [$plugin_public, 'super_downloads_api_user_credits_left_shortcode']);
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');

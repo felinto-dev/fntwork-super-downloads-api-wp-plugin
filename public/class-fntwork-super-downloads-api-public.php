@@ -55,13 +55,12 @@ class Fntwork_Super_Downloads_Api_Public
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct(
-		string $plugin_name, 
-		string $version, 
-		Fntwork_Super_Downloads_API_Manager $api_manager, 
+		string $plugin_name,
+		string $version,
+		Fntwork_Super_Downloads_API_Manager $api_manager,
 		Fntwork_Super_Downloads_Api_Rate_Limiter $rate_limiter,
 		Fntwork_Super_Downloads_Api_Settings_Manager $settings_manager,
-		)
-	{
+	) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->api_manager = $api_manager;
@@ -89,6 +88,39 @@ class Fntwork_Super_Downloads_Api_Public
 		ob_start();
 		include(plugin_dir_path(__FILE__) . 'partials/fntwork-super-downloads-api-user-credits-left-public-display.php');
 		return ob_get_clean();
+	}
+
+	public function provider_info_shortcode($atts)
+	{
+		$atts = shortcode_atts(array(
+			'id' => '',
+			'attribute' => '',
+		), $atts, 'provider_info');
+
+		if (empty($atts['id'])) {
+			return 'Error: Provider ID not provided.';
+		}
+
+		$providers = $this->api_manager->get_providers();
+		$output = 'Provider not found';
+
+		foreach ($providers as $provider) {
+			if ($provider['attributes']['provider_id'] === $atts['id']) {
+				if (!empty($atts['attribute']) && isset($provider['attributes'][$atts['attribute']])) {
+					return $provider['attributes'][$atts['attribute']];
+				} else {
+					foreach ($provider['attributes'] as $key => $value) {
+						if (is_array($value)) {
+							continue;
+						}
+						$output .= "$key: $value<br>";
+					}
+				}
+				break;
+			}
+		}
+
+		return !empty($output) ? $output : 'Provider not found';
 	}
 
 	public function on_new_download($api_endpoint, $api_body, $response_data)
