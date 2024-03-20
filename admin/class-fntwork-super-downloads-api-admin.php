@@ -240,6 +240,16 @@ class Fntwork_Super_Downloads_Api_Admin
 			$providers = $this->api_manager->get_providers();
 		}
 
+		// Ordenando o array pelo nickname
+		usort($providers, function ($a, $b) {
+			return strcmp($a['attributes']['nickname'], $b['attributes']['nickname']);
+		});
+
+		// Filtrando o array
+		$providers = array_filter($providers, function ($provider) {
+			return count($provider['attributes']['patterns']) > 0 && $provider['attributes']['suspension_message'] === NULL;
+		});
+
 		function generate_provider_shortcode($provider_id, $attribute)
 		{
 			return "<code>[super-downloads-api_provider-info id='{$provider_id}' attribute='$attribute']</code>";
@@ -248,12 +258,14 @@ class Fntwork_Super_Downloads_Api_Admin
 		function get_provider_info_html($provider_id)
 		{
 			$provider_banner_url = do_shortcode("[super-downloads-api_provider-info id='{$provider_id}' attribute='banner_url']");
+			$provider_description = do_shortcode("[super-downloads-api_provider-info id='{$provider_id}' attribute='description']");
 			$banner_url_shortcode = generate_provider_shortcode($provider_id, 'banner_url');
 			$site_url_shortcode = generate_provider_shortcode($provider_id, 'site');
 			$description_shortcode = generate_provider_shortcode($provider_id, 'description');
 
 			$elements = [
 				"<img width='200px' src='{$provider_banner_url}'><br>",
+				"<i>{$provider_description}</i><br><br>",
 				"<b>ID: <code>{$provider_id}</code></b><br>",
 				"<b>Shortcode úteis:</b><br>",
 				"<p>Banner: {$banner_url_shortcode}</p>",
