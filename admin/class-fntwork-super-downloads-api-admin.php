@@ -80,7 +80,7 @@ class Fntwork_Super_Downloads_Api_Admin
 
 	public function is_options_page()
 	{
-		if (is_admin() AND isset($_GET['page'])) {
+		if (is_admin() and isset($_GET['page'])) {
 			$page_value = $_GET['page'];
 			if ($page_value == $this->settings_manager->get_option_key()) {
 				return true;
@@ -240,18 +240,40 @@ class Fntwork_Super_Downloads_Api_Admin
 			$providers = $this->api_manager->get_providers();
 		}
 
+		function generate_provider_shortcode($provider_id, $attribute)
+		{
+			return "<code>[super-downloads-api_provider-info id='{$provider_id}' attribute='$attribute']</code>";
+		}
+
+		function get_provider_info_html($provider_id)
+		{
+			$provider_banner_url = do_shortcode("[super-downloads-api_provider-info id='{$provider_id}' attribute='banner_url']");
+			$banner_url_shortcode = generate_provider_shortcode($provider_id, 'banner_url');
+			$site_url_shortcode = generate_provider_shortcode($provider_id, 'site');
+			$description_shortcode = generate_provider_shortcode($provider_id, 'description');
+
+			$elements = [
+				"<img width='200px' src='{$provider_banner_url}'><br>",
+				"<b>ID: <code>{$provider_id}</code></b><br>",
+				"<b>Shortcode úteis:</b><br>",
+				"<p>Banner: {$banner_url_shortcode}</p>",
+				"<p>Descrição: {$description_shortcode}</p>",
+				"<p>URL do site: {$site_url_shortcode}</p>"
+			];
+
+			return implode('', $elements);
+		}
+
 		foreach ($providers as $provider) {
 			$provider_id = $provider['attributes']['provider_id'];
 			$provider_nickname = $provider['attributes']['nickname'];
-			$provider_description = "Manage Access for Provider: {$provider_nickname}";
 
 			$group_field_id = $cmb->add_field(array(
 				'id'          => "{$provider_id}_provider_options",
 				'type'        => 'group',
-				'description' => $provider_description,
 				'repeatable'  => false,
 				'options'     => array(
-					'group_title'   => $provider_description,
+					'group_title'   => $provider_nickname,
 					'sortable'      => false,
 				),
 			));
@@ -268,6 +290,7 @@ class Fntwork_Super_Downloads_Api_Admin
 				'name' => 'Credits Spent per Download',
 				'id' => 'credits_spent_per_download',
 				'type' => 'text',
+				'before_row' => get_provider_info_html($provider_id),
 				'default' => 1,
 				'desc'    => 'This value represents the number of credits that are deducted from a user\'s account each time they download content from a specific provider.',
 				'sanitization_cb' => function ($value) {
