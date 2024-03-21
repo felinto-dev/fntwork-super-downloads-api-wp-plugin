@@ -240,16 +240,6 @@ class Fntwork_Super_Downloads_Api_Admin
 			$providers = $this->api_manager->get_providers();
 		}
 
-		// Ordenando o array pelo nickname
-		usort($providers, function ($a, $b) {
-			return strcmp($a['attributes']['nickname'], $b['attributes']['nickname']);
-		});
-
-		// Filtrando o array
-		$providers = array_filter($providers, function ($provider) {
-			return count($provider['attributes']['patterns']) > 0 && $provider['attributes']['suspension_message'] === NULL;
-		});
-
 		function generate_provider_shortcode($provider_id, $attribute)
 		{
 			return "<code>[super-downloads-api_provider-info id='{$provider_id}' attribute='$attribute']</code>";

@@ -43,8 +43,18 @@ class Fntwork_Super_Downloads_API_Manager
 			$data = json_decode($body, true);
 
 			if (isset($data['data'])) {
-				set_transient($transient_key, $data['data'], 1 * WEEK_IN_SECONDS);
-				return $data['data'];
+				$providers = $data['data'];
+
+				usort($providers, function ($a, $b) {
+					return strcmp($a['attributes']['nickname'], $b['attributes']['nickname']);
+				});
+
+				$providers = array_filter($providers, function ($provider) {
+					return count($provider['attributes']['patterns']) > 0 && $provider['attributes']['suspension_message'] === NULL;
+				});
+
+				set_transient($transient_key, $providers, 1 * WEEK_IN_SECONDS);
+				return $providers;
 			} else {
 				return [];
 			}
@@ -195,10 +205,11 @@ class Fntwork_Super_Downloads_API_Manager
 		return apply_filters('super_downloads_api_generate_provider_download_url_response', $response_data);
 	}
 
-	public function custom_reached_daily_limit_download_message($response_data) {
+	public function custom_reached_daily_limit_download_message($response_data)
+	{
 		$message = $response_data['translations']['pt_BR'] ?? null;
 
-		if ($message AND $response_data['code'] === '1100') {
+		if ($message and $response_data['code'] === '1100') {
 			$response_data['translations']['pt_BR'] = $this->settings_manager->get_daily_download_limit_text();
 		}
 
